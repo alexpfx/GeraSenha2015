@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingLeft="8dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="nonononono@@nononono"
+        android:id="@+id/generated_password_textview"
+        android:textColor="@color/md_white_1000"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true"
+         />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        >
+
+    <ImageButton
+        android:id="@+id/new_pass_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/circle"
+        android:elevation="2dp"
+        android:src="@drawable/ic_action_new"
+        />
+    </FrameLayout>
+
+</RelativeLayout>
