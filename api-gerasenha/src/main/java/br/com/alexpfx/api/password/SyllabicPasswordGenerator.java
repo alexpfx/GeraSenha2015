@@ -2,7 +2,7 @@ package br.com.alexpfx.api.password;
 
 import static br.com.alexandrealessi.suseproject.api.utils.UtilsString.pickUp;
 import static br.com.alexandrealessi.suseproject.api.utils.UtilsString.pickUpOneEach;
-import static br.com.alexpfx.api.password.PasswordOptions.KEY_SYLLABIC_PASSWORD_PATTERN;
+import static br.com.alexpfx.api.password.CommonPasswordOptions.KEY_SYLLABIC_PASSWORD_PATTERN;
 import static br.com.alexpfx.api.password.SyllabicPasswordPatternType.*;
 
 /**
@@ -10,8 +10,8 @@ import static br.com.alexpfx.api.password.SyllabicPasswordPatternType.*;
  */
 public class SyllabicPasswordGenerator implements PasswordGenerator {
     @Override
-    public String generatePassword(PasswordOptions options) {
-        Integer passwordSize = options.<Integer>getOption(PasswordOptions.KEY_SIZE, 10);
+    public String generatePassword(CommonPasswordOptions options) {
+        Integer passwordSize = options.<Integer>getOption(CommonPasswordOptions.KEY_SIZE, 10);
         SyllabicPasswordPatternType[] pattern = options.<SyllabicPasswordPatternType[]>getOption(KEY_SYLLABIC_PASSWORD_PATTERN, new SyllabicPasswordPatternType[]{SYLLABLE, NUMBER});
         String consonants = CharGroup.CONSONANTS.toString();
         String vowels = CharGroup.VOWELS.toString();

@@ -6,6 +6,6 @@ package br.com.alexpfx.api.password;
 public interface PasswordGenerator {
 
 
-    String generatePassword (PasswordOptions options);
+    String generatePassword (CommonPasswordOptions options);
 
 }
