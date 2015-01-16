@@ -16,6 +16,7 @@ public enum CharGroup {
     NUMBERS("0123456789"),
     SPECIAL_CHARS("!@#$%&*()_+[]/;.,<>:?}{=-");
 
+
     private String group;
 
 
