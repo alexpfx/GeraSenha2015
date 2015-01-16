@@ -6,7 +6,6 @@ import java.util.List;
  * Created by alexandre on 13/01/15.
  */
 public enum CharGroup {
-
     VOWELS("aeiouy"),
     CONSONANTS("bcdfghjklmnpqrstvxzw"),
     VOWELS_UPPER(VOWELS.toString().toUpperCase()),
