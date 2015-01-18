@@ -1,29 +1,48 @@
 package br.com.alexpfx.api.password;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import br.com.alexandrealessi.suseproject.api.services.*;
-import br.com.alexandrealessi.suseproject.api.services.SyllabicPasswordGenerator;
 
 /**
  * Created by alexandre on 15/01/15.
  */
-public class SyllabicPasswordOptions extends CommonPasswordOptions {
+public class SyllabicPasswordOptions implements PasswordOptions{
 
 
-    private List<SyllabicPasswordPatternType> orderedPattern;
+    private Integer size;
+    private List<CharGroup> sortedPattern;
 
-    public SyllabicPasswordOptions(Integer size) {
-        super(size);
+    private SyllabicPasswordOptions(Builder builder) {
+        size = builder.size;
+        sortedPattern = builder.sortedPattern;
     }
 
-    public void setOrderedPattern(List<SyllabicPasswordPatternType> orderedPattern) {
-        this.orderedPattern = orderedPattern;
+    public Integer getSize() {
+        return size;
     }
 
-    public List<SyllabicPasswordPatternType> getOrderedPattern() {
-        return orderedPattern;
+    public List<CharGroup> getSortedPattern() {
+        return sortedPattern;
+    }
+
+    public static final class Builder {
+        private Integer size;
+        private List<CharGroup> sortedPattern;
+
+        public Builder() {
+        }
+
+        public Builder size(Integer size) {
+            this.size = size;
+            return this;
+        }
+
+        public Builder sortedPattern(List<CharGroup> sortedPattern) {
+            this.sortedPattern = sortedPattern;
+            return this;
+        }
+
+        public SyllabicPasswordOptions build() {
+            return new SyllabicPasswordOptions(this);
+        }
     }
 }

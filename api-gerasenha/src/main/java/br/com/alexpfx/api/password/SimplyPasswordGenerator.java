@@ -1,24 +1,25 @@
 package br.com.alexpfx.api.password;
 
-import java.util.Arrays;
 import java.util.List;
+
+import br.com.alexpfx.api.password.br.com.alexpfx.utils.RandomUtils;
 
 /**
  * Created by alexandre on 13/01/15.
  */
-public class SimplyPasswordGenerator implements PasswordGenerator {
-    private static final Integer DEFAULT_PASSWORD_SIZE = 10;
-    private static final List<CharGroup> DEFAULT_CHAR_GROUP_ARRAY = Arrays.asList(new CharGroup[]{CharGroup.ALPHABET});
+public class SimplyPasswordGenerator implements PasswordGenerator<SimplyPasswordOptions> {
 
     @Override
-    public String generatePassword(CommonPasswordOptions options) {
-        List<CharGroup> charsGroups = options.<List<CharGroup>>getOption(CommonPasswordOptions.KEY_CHAR_GROUP_ARRAY, DEFAULT_CHAR_GROUP_ARRAY);
-        String charList = CharGroup.concatAndConvert(charsGroups);
-        Integer passwordSize = options.<Integer>getOption(CommonPasswordOptions.KEY_SIZE, DEFAULT_PASSWORD_SIZE);
+    public String generatePassword(SimplyPasswordOptions options) {
+        Integer size = options.getSize();
+        List<CharGroup> charGroups = options.getCharGroups();
+
         StringBuilder password = new StringBuilder();
-        for (int i = 0; i < passwordSize; i++) {
-//            password.append(RandomUtils.getOneCharacterOf(charList));
+        for (int i = 0; i < size; i++) {
+            password.append(RandomUtils.getOneCharacterOf(CharGroup.concatAndConvert(charGroups)));
         }
         return password.toString();
     }
+
+
 }
