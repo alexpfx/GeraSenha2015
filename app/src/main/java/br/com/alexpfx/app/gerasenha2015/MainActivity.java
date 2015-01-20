@@ -18,15 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alexandrealessi.gerasenha2015.R;
-import br.com.alexandrealessi.suseproject.api.Constants;
-import br.com.alexandrealessi.suseproject.api.services.RandomPasswordGenerator;
-import br.com.alexandrealessi.suseproject.api.services.SyllabicPasswordGenerator;
+import br.com.alexpfx.supersenha.lib.CharGroup;
+import br.com.alexpfx.supersenha.lib.PasswordGenerator;
+import br.com.alexpfx.supersenha.lib.PasswordOptions;
+import br.com.alexpfx.supersenha.lib.SimplyPasswordGenerator;
+import br.com.alexpfx.supersenha.lib.SimplyPasswordOptions;
+import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
 
-import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.ViewModel.createNew;
-import static br.com.alexandrealessi.suseproject.api.services.SyllabicPasswordGenerator.*;
 
-
-public class MainActivity extends ActionBarActivity implements OverflowMenuRecyclerViewAdapter.OnItemClick{
+public class MainActivity extends ActionBarActivity implements OverflowMenuRecyclerViewAdapter.OnItemClick {
 
 
     private Toolbar toolbar;
@@ -36,15 +36,14 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
     private OverflowMenuRecyclerViewAdapter overflowMenuRecyclerViewAdapter;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private PasswordTypeStatus typeStatus;
     private TextView generatedPassTextView;
+    private PasswordGenerator gerador;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTypeStatus(PasswordTypeStatus.ALEATORIAS);
         setupButtons();
         setupToolbar();
         setupRecyclerView();
@@ -52,26 +51,25 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
     }
 
     private void setupButtons() {
-        generatedPassTextView = (TextView) findViewById(R.id.generated_password_textview);
-        ImageButton geraSenhaButton = (ImageButton) findViewById(R.id.new_pass_button);
+       generatedPassTextView = (TextView) findViewById(R.id.generated_password_textview);
+        final ImageButton geraSenhaButton = (ImageButton) findViewById(R.id.new_pass_button);
         geraSenhaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //provisorio
-                String pass = genPasswordByTypeStatus();
+                if (gerador == null){
+                    setGerador(new SimplyPasswordGenerator());
+                }
+                String pass = gerador.generatePassword(getPasswordOptions ());
                 generatedPassTextView.setText(pass);
             }
         });
     }
 
-    private String genPasswordByTypeStatus() {
-        if (typeStatus == null || typeStatus.equals(PasswordTypeStatus.ALEATORIAS)){
-           return new RandomPasswordGenerator().createRandomPassword(10, Constants.ALPHABET);
-        }else if (typeStatus.equals(PasswordTypeStatus.SILABICAS)){
-            return new SyllabicPasswordGenerator().createSyllabicPassword(10, Constants.CONSONANTS, Constants.VOWELS, Constants.NUMBERS, Constants.SPECIAL_CHARS, new PatternType[]{PatternType.SYLLABLE, PatternType.NUMBER, PatternType.SPECIAL_CHAR});
-        }else if (typeStatus.equals(PasswordTypeStatus.CONCATENADAS)){
+    private PasswordOptions getPasswordOptions() {
+        return new SimplyPasswordOptions.Builder().size(20).charGroups(CharGroup.ALPHABET).build();
+    }
 
-        }
+    private String genPasswordByTypeStatus() {
         return "";
     }
 
@@ -97,9 +95,13 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
         ColorTriade clSilabicas = ColorTriade.create(getResources(), R.color.SenhasSilabicas_PrimaryColor, R.color.SenhasSilabicas_PrimaryColorDark, R.color.SenhasSilabicas_AccentColor);
         ColorTriade clConcatenadas = ColorTriade.create(getResources(), R.color.SenhasConcatenadas_PrimaryColor, R.color.SenhasConcatenadas_PrimaryColorDark, R.color.SenhasConcatenadas_AccentColor);
 
-        OverflowMenuRecyclerViewAdapter.ViewModel.createNew(R.drawable.ic_aleatoria, "Senhas Aleatórias", " Ex: a1&bC2*", clAleatorias).addTo(lista);
-        OverflowMenuRecyclerViewAdapter.ViewModel.createNew(R.drawable.ic_silabica, "Senhas Silábicas", " Ex: Mo21Ce32&%", clSilabicas).addTo(lista);
-        OverflowMenuRecyclerViewAdapter.ViewModel.createNew(R.drawable.ic_concatenada, "Senhas Concatenadas", " Ex: azul@tenis@pincel", clConcatenadas).addTo(lista);
+
+        //TODO externalizar strings
+        SenhaMenuItem simplyPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Aleatorias").subTitle(" Ex: a1&bC2*").colors(clAleatorias).itemIconImgSrc(R.drawable.ic_aleatoria).generator(new SimplyPasswordGenerator()).build();
+        SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%").colors(clSilabicas).itemIconImgSrc(R.drawable.ic_silabica).generator(new SyllabicPasswordGenerator()).build();
+
+        OverflowMenuRecyclerViewAdapter.ViewModel.createNew(simplyPasswordMenuItem).addTo(lista);
+        OverflowMenuRecyclerViewAdapter.ViewModel.createNew(syllabicPasswordMenuItem).addTo(lista);
 
         return lista;
     }
@@ -147,13 +149,12 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
 
     @Override
     public void onItemClick(OverflowMenuRecyclerViewAdapter.ViewModel viewModel) {
-        sessionTitleTextView.setText(viewModel.getItemTitle());
+        setGerador(viewModel.getSenhaMenuItem().getGenerator());
+        sessionTitleTextView.setText(viewModel.getSenhaMenuItem().getTitle());
         drawerLayout.closeDrawer(overflowMenuRecyclerView);
     }
 
-    public void setTypeStatus(PasswordTypeStatus typeStatus) {
-        this.typeStatus = typeStatus;
+    public void setGerador(PasswordGenerator gerador) {
+        this.gerador = gerador;
     }
-
-
 }

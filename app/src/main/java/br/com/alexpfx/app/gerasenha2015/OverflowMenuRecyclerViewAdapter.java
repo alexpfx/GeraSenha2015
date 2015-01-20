@@ -1,8 +1,6 @@
 package br.com.alexpfx.app.gerasenha2015;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +43,9 @@ public class OverflowMenuRecyclerViewAdapter extends RecyclerView.Adapter<Overfl
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ViewModel item = modelItemList.get(position);
-        holder.tvTitulo.setText(item.itemTitle);
-        holder.tvSubtitulo.setText(item.itemSubTitle);
-        holder.image.setImageResource(item.itemIconImgSrc);
+        holder.tvTitulo.setText(item.getSenhaMenuItem().getTitle());
+        holder.tvSubtitulo.setText(item.getSenhaMenuItem().getSubTitle());
+        holder.image.setImageResource(item.getSenhaMenuItem().getItemIconImgSrc());
     }
 
     @Override
@@ -55,61 +53,27 @@ public class OverflowMenuRecyclerViewAdapter extends RecyclerView.Adapter<Overfl
         return modelItemList.size();
     }
 
-    public static interface OnItemClick{
-        void onItemClick (ViewModel viewModel);
+    public static interface OnItemClick {
+        void onItemClick(ViewModel viewModel);
     }
 
     public static class ViewModel {
-        private final int itemIconImgSrc;
-        private final String itemTitle;
-        private final String itemSubTitle;
-        private Class<? extends Fragment> fragment;
-        private ColorTriade colorTriade;
+        private SenhaMenuItem senhaMenuItem;
 
-        private ViewModel(int itemIconImgSrc, String itemTitle, String itemSubTitle) {
-            this.itemIconImgSrc = itemIconImgSrc;
-            this.itemTitle = itemTitle;
-            this.itemSubTitle = itemSubTitle;
+        private ViewModel(SenhaMenuItem senhaMenuItem) {
+            this.senhaMenuItem = senhaMenuItem;
         }
 
-        private ViewModel(int itemIconImgSrc, String itemTitle, String itemSubTitle, @Nullable ColorTriade colorTriade) {
-            this(itemIconImgSrc, itemTitle, itemSubTitle);
-            this.colorTriade = colorTriade;
+        public SenhaMenuItem getSenhaMenuItem() {
+            return senhaMenuItem;
         }
 
-
-        public static ViewModel createNew(int srcImage, String titulo, String subTitulo) {
-            return new ViewModel(srcImage, titulo, subTitulo);
+        public static ViewModel createNew (SenhaMenuItem senhaMenuItem){
+            return new ViewModel(senhaMenuItem);
         }
 
-        public static ViewModel createNew(int srcImage, String titulo, String subTitulo, @Nullable ColorTriade colorTriade) {
-            return new ViewModel(srcImage, titulo, subTitulo, colorTriade);
-        }
-
-        public void addTo(List<ViewModel> list) {
-            if (list != null) {
-                list.add(this);
-            }
-        }
-
-        public int getItemIconImgSrc() {
-            return itemIconImgSrc;
-        }
-
-        public String getItemTitle() {
-            return itemTitle;
-        }
-
-        public String getItemSubTitle() {
-            return itemSubTitle;
-        }
-
-        public Class<? extends Fragment> getFragment() {
-            return fragment;
-        }
-
-        public ColorTriade getColorTriade() {
-            return colorTriade;
+        public void addTo(List<ViewModel> lista) {
+            lista.add(this);
         }
     }
 
@@ -118,7 +82,6 @@ public class OverflowMenuRecyclerViewAdapter extends RecyclerView.Adapter<Overfl
         private ImageView image;
         private TextView tvTitulo;
         private TextView tvSubtitulo;
-
 
         public ViewHolder(View itemView) {
             super(itemView);
