@@ -1,5 +1,7 @@
 package br.com.alexpfx.app.gerasenha2015;
 
+import android.content.Context;
+
 import br.com.alexpfx.supersenha.lib.PasswordGenerator;
 import br.com.alexpfx.supersenha.lib.PasswordOptions;
 
@@ -9,11 +11,12 @@ import br.com.alexpfx.supersenha.lib.PasswordOptions;
 public class SenhaMenuItem {
 
     private final PasswordGenerator<PasswordOptions> generator;
+    private final OpcoesSenhaDialogFragment dialogFragment;
     private final String title;
     private final String subTitle;
     private final int itemIconImgSrc;
     private final ColorTriade colors;
-
+    private  Context context;
 
     public PasswordGenerator<PasswordOptions> getGenerator() {
         return generator;
@@ -37,6 +40,7 @@ public class SenhaMenuItem {
 
     private SenhaMenuItem(Builder builder) {
         generator = builder.generator;
+        dialogFragment = builder.dialogFragment;
         title = builder.title;
         subTitle = builder.subTitle;
         itemIconImgSrc = builder.itemIconImgSrc;
@@ -50,6 +54,7 @@ public class SenhaMenuItem {
 
     public static final class Builder {
         private PasswordGenerator<PasswordOptions> generator;
+        private OpcoesSenhaDialogFragment dialogFragment;
         private String title;
         private String subTitle;
         private int itemIconImgSrc;
@@ -58,10 +63,6 @@ public class SenhaMenuItem {
         public Builder() {
         }
 
-        public Builder generator(PasswordGenerator generator) {
-            this.generator = generator;
-            return this;
-        }
 
         public Builder title(String title) {
             this.title = title;
@@ -85,6 +86,16 @@ public class SenhaMenuItem {
 
         public SenhaMenuItem build() {
             return new SenhaMenuItem(this);
+        }
+
+        public Builder generator(PasswordGenerator generator) {
+            this.generator = generator;
+            return this;
+        }
+
+        public Builder dialogFragment(OpcoesSenhaDialogFragment dialogFragment) {
+            this.dialogFragment = dialogFragment;
+            return this;
         }
     }
 }

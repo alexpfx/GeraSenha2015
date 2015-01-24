@@ -106,7 +106,7 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
 
         //TODO externalizar strings
         SenhaMenuItem simplyPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Aleatorias").subTitle(" Ex: a1&bC2*").colors(clAleatorias).itemIconImgSrc(R.drawable.ic_aleatoria).generator(new SimplyPasswordGenerator()).build();
-        SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%").colors(clSilabicas).itemIconImgSrc(R.drawable.ic_silabica).generator(new SyllabicPasswordGenerator()).build();
+        SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%").colors(clSilabicas).itemIconImgSrc(R.drawable.ic_silabica).generator(new SyllabicPasswordGenerator()).dialogFragment(new OpcoesSenhaDialogFragment()).build();
 
 
         InputStream is = getResources().openRawResource(R.raw.ptbr);

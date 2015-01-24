@@ -6,5 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="abrir">Abrir</string>
     <string name="fechar">Fechar</string>
+    <string name="gerar">Gerar</string>
+    <string name="cancelar">Cancelar</string>
 
 </resources>
