@@ -44,8 +44,8 @@ public class SenhaMenuItem {
     }
 
 
-    public String gerarSenha(PasswordOptions options) {
-        return generator.generatePassword(options);
+    public String gerarSenha() {
+        return generator.generatePassword();
     }
 
     public static final class Builder {

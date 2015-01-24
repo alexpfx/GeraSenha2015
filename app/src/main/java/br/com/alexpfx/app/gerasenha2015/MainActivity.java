@@ -8,17 +8,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alexandrealessi.gerasenha2015.R;
 import br.com.alexpfx.supersenha.lib.CharGroup;
+import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordGenerator;
 import br.com.alexpfx.supersenha.lib.PasswordGenerator;
 import br.com.alexpfx.supersenha.lib.PasswordOptions;
 import br.com.alexpfx.supersenha.lib.SimplyPasswordGenerator;
@@ -27,6 +32,8 @@ import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
 
 
 public class MainActivity extends ActionBarActivity implements OverflowMenuRecyclerViewAdapter.OnItemClick {
+
+    public static final String TAG = MainActivity.class.getName();
 
 
     private Toolbar toolbar;
@@ -42,6 +49,7 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupButtons();
@@ -59,7 +67,7 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
                 if (gerador == null){
                     setGerador(new SimplyPasswordGenerator());
                 }
-                String pass = gerador.generatePassword(getPasswordOptions ());
+                String pass = gerador.generatePassword();
                 generatedPassTextView.setText(pass);
             }
         });
@@ -100,9 +108,14 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
         SenhaMenuItem simplyPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Aleatorias").subTitle(" Ex: a1&bC2*").colors(clAleatorias).itemIconImgSrc(R.drawable.ic_aleatoria).generator(new SimplyPasswordGenerator()).build();
         SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%").colors(clSilabicas).itemIconImgSrc(R.drawable.ic_silabica).generator(new SyllabicPasswordGenerator()).build();
 
+
+        InputStream is = getResources().openRawResource(R.raw.ptbr);
+        PasswordGenerator senhaConcatenadaGenerator = new ConcatenatedPasswordGenerator(new BufferedReader(new InputStreamReader(is)));
+        SenhaMenuItem concatenatedPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Concatenadas").subTitle(" Ex: casa@tapete@ferro").colors(clConcatenadas).itemIconImgSrc(R.drawable.ic_concatenada).generator(senhaConcatenadaGenerator).build();
+
         OverflowMenuRecyclerViewAdapter.ViewModel.createNew(simplyPasswordMenuItem).addTo(lista);
         OverflowMenuRecyclerViewAdapter.ViewModel.createNew(syllabicPasswordMenuItem).addTo(lista);
-
+        OverflowMenuRecyclerViewAdapter.ViewModel.createNew(concatenatedPasswordMenuItem).addTo(lista);
         return lista;
     }
 
@@ -155,6 +168,8 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
     }
 
     public void setGerador(PasswordGenerator gerador) {
+        System.out.println(gerador.getClass().getName());
+        Log.d(TAG,""+gerador.getClass());
         this.gerador = gerador;
     }
 }
