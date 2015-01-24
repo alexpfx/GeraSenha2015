@@ -1,0 +1,4 @@
+- organizar codigo em MainActivity
+- externalizar strings
+- parametrizar senhas com options apropriado, via escolha do usuario.
+
