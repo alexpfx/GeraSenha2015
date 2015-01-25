@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,11 +27,13 @@ import java.util.Map;
 import br.com.alexandrealessi.gerasenha2015.R;
 import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordGenerator;
 import br.com.alexpfx.supersenha.lib.PasswordGenerator;
+import br.com.alexpfx.supersenha.lib.PasswordOptionsException;
 import br.com.alexpfx.supersenha.lib.SimplyPasswordGenerator;
+import br.com.alexpfx.supersenha.lib.SimplyPasswordOptions;
 import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
 
 
-public class MainActivity extends ActionBarActivity implements OverflowMenuRecyclerViewAdapter.OnItemClick, CommonPasswordOptionsDialogFragment.OnGeneratePasswordListener {
+public class MainActivity extends ActionBarActivity implements OverflowMenuRecyclerViewAdapter.OnItemClick, CommonPasswordOptionsDialogFragment.OnCommonPasswordOptionsPositiveButtonClick {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -47,7 +51,6 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupButtons();
@@ -167,8 +170,22 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
     }
 
     @Override
-    public void onButtonClick(String tags, Integer passwordSize, Map<String, Boolean> selectedCharGroups) {
-        Toast.makeText(getApplicationContext(),tags,Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),""+passwordSize, Toast.LENGTH_SHORT).show();
+    public void onCommonOptionsDialogPasswordPositiveButtonClick(String tags, String passwordSize, Map<String, Boolean> selectedCharGroups) {
+        Boolean numbers = selectedCharGroups.get("numbers");
+        Boolean alpha = selectedCharGroups.get("lower");
+        Boolean upper = selectedCharGroups.get("upper");
+        Boolean special = selectedCharGroups.get("special");
+        Integer size = StringUtils.isBlank(passwordSize)?12:Integer.parseInt(passwordSize);
+        SimplyPasswordOptions options = new SimplyPasswordOptions.Builder().size(size).alpha(alpha).alphaUpperCase(upper).specialChars(special).numbers(numbers).build();
+        try {
+            options.validate();
+            activeMenuItem.getGenerator().setPasswordOptions(options);
+            generatedPassTextView.setText(activeMenuItem.getGenerator().generatePassword());
+            Toast.makeText(getApplicationContext(),"Senha Gerada", Toast.LENGTH_SHORT).show();
+        } catch (PasswordOptionsException e){
+            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 }

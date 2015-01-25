@@ -13,5 +13,6 @@
     <string name="minusculas">Letras Minúsculas</string>
     <string name="maiusculas">Letras Maiúsculas</string>
     <string name="caracteres_especiais">Caractéres Especiais</string>
+    <string name="iniciais_maiusculas">Iniciais Maiúsculas</string>
 
 </resources>
