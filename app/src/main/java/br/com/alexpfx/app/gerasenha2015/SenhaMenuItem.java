@@ -1,6 +1,8 @@
 package br.com.alexpfx.app.gerasenha2015;
 
+
 import android.content.Context;
+import android.support.v4.app.DialogFragment;
 
 import br.com.alexpfx.supersenha.lib.PasswordGenerator;
 import br.com.alexpfx.supersenha.lib.PasswordOptions;
@@ -11,12 +13,19 @@ import br.com.alexpfx.supersenha.lib.PasswordOptions;
 public class SenhaMenuItem {
 
     private final PasswordGenerator<PasswordOptions> generator;
-    private final OpcoesSenhaDialogFragment dialogFragment;
+    private final DialogFragment dialogFragment;
     private final String title;
     private final String subTitle;
     private final int itemIconImgSrc;
-    private final ColorTriade colors;
-    private  Context context;
+    private Context context;
+
+    private SenhaMenuItem(Builder builder) {
+        generator = builder.generator;
+        dialogFragment = builder.dialogFragment;
+        title = builder.title;
+        subTitle = builder.subTitle;
+        itemIconImgSrc = builder.itemIconImgSrc;
+    }
 
     public PasswordGenerator<PasswordOptions> getGenerator() {
         return generator;
@@ -34,19 +43,9 @@ public class SenhaMenuItem {
         return itemIconImgSrc;
     }
 
-    public ColorTriade getColors() {
-        return colors;
+    public DialogFragment getDialogFragment() {
+        return dialogFragment;
     }
-
-    private SenhaMenuItem(Builder builder) {
-        generator = builder.generator;
-        dialogFragment = builder.dialogFragment;
-        title = builder.title;
-        subTitle = builder.subTitle;
-        itemIconImgSrc = builder.itemIconImgSrc;
-        colors = builder.colors;
-    }
-
 
     public String gerarSenha() {
         return generator.generatePassword();
@@ -54,11 +53,10 @@ public class SenhaMenuItem {
 
     public static final class Builder {
         private PasswordGenerator<PasswordOptions> generator;
-        private OpcoesSenhaDialogFragment dialogFragment;
+        private DialogFragment dialogFragment;
         private String title;
         private String subTitle;
         private int itemIconImgSrc;
-        private ColorTriade colors;
 
         public Builder() {
         }
@@ -79,11 +77,6 @@ public class SenhaMenuItem {
             return this;
         }
 
-        public Builder colors(ColorTriade colors) {
-            this.colors = colors;
-            return this;
-        }
-
         public SenhaMenuItem build() {
             return new SenhaMenuItem(this);
         }
@@ -93,7 +86,7 @@ public class SenhaMenuItem {
             return this;
         }
 
-        public Builder dialogFragment(OpcoesSenhaDialogFragment dialogFragment) {
+        public Builder dialogFragment(DialogFragment dialogFragment) {
             this.dialogFragment = dialogFragment;
             return this;
         }

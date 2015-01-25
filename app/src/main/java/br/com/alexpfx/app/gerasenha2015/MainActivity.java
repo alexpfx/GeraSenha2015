@@ -8,30 +8,28 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import br.com.alexandrealessi.gerasenha2015.R;
-import br.com.alexpfx.supersenha.lib.CharGroup;
 import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordGenerator;
 import br.com.alexpfx.supersenha.lib.PasswordGenerator;
-import br.com.alexpfx.supersenha.lib.PasswordOptions;
 import br.com.alexpfx.supersenha.lib.SimplyPasswordGenerator;
-import br.com.alexpfx.supersenha.lib.SimplyPasswordOptions;
 import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
 
 
-public class MainActivity extends ActionBarActivity implements OverflowMenuRecyclerViewAdapter.OnItemClick {
+public class MainActivity extends ActionBarActivity implements OverflowMenuRecyclerViewAdapter.OnItemClick, CommonPasswordOptionsDialogFragment.OnGeneratePasswordListener {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -44,7 +42,7 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private TextView generatedPassTextView;
-    private PasswordGenerator gerador;
+    private SenhaMenuItem activeMenuItem;
 
 
     @Override
@@ -59,23 +57,20 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
     }
 
     private void setupButtons() {
-       generatedPassTextView = (TextView) findViewById(R.id.generated_password_textview);
+        generatedPassTextView = (TextView) findViewById(R.id.generated_password_textview);
         final ImageButton geraSenhaButton = (ImageButton) findViewById(R.id.new_pass_button);
         geraSenhaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (gerador == null){
-                    setGerador(new SimplyPasswordGenerator());
+                if (activeMenuItem == null) {
+
+                } else {
+                    activeMenuItem.getDialogFragment().show(getSupportFragmentManager(), "passwordOptions");
                 }
-                String pass = gerador.generatePassword();
-                generatedPassTextView.setText(pass);
             }
         });
     }
 
-    private PasswordOptions getPasswordOptions() {
-        return new SimplyPasswordOptions.Builder().size(20).charGroups(CharGroup.ALPHABET).build();
-    }
 
     private String genPasswordByTypeStatus() {
         return "";
@@ -93,26 +88,26 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
         overflowMenuRecyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         overflowMenuRecyclerView.setLayoutManager(layoutManager);
-        overflowMenuRecyclerViewAdapter = new OverflowMenuRecyclerViewAdapter(getApplicationContext(), criarItemsMenuLateral(), this);
+        overflowMenuRecyclerViewAdapter = new OverflowMenuRecyclerViewAdapter(getApplicationContext(), setupMenuItems(), this);
         overflowMenuRecyclerView.setAdapter(overflowMenuRecyclerViewAdapter);
     }
 
-    private List<OverflowMenuRecyclerViewAdapter.ViewModel> criarItemsMenuLateral() {
+
+    public void showPasswordOptionsDialog() {
+
+
+    }
+
+    private List<OverflowMenuRecyclerViewAdapter.ViewModel> setupMenuItems() {
         List<OverflowMenuRecyclerViewAdapter.ViewModel> lista = new ArrayList<OverflowMenuRecyclerViewAdapter.ViewModel>();
-        ColorTriade clAleatorias = ColorTriade.create(getResources(), R.color.SenhasAleatorias_PrimaryColor, R.color.SenhasAleatorias_PrimaryColorDark, R.color.SenhasAleatorias_AccentColor);
-        ColorTriade clSilabicas = ColorTriade.create(getResources(), R.color.SenhasSilabicas_PrimaryColor, R.color.SenhasSilabicas_PrimaryColorDark, R.color.SenhasSilabicas_AccentColor);
-        ColorTriade clConcatenadas = ColorTriade.create(getResources(), R.color.SenhasConcatenadas_PrimaryColor, R.color.SenhasConcatenadas_PrimaryColorDark, R.color.SenhasConcatenadas_AccentColor);
-
-
         //TODO externalizar strings
-        SenhaMenuItem simplyPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Aleatorias").subTitle(" Ex: a1&bC2*").colors(clAleatorias).itemIconImgSrc(R.drawable.ic_aleatoria).generator(new SimplyPasswordGenerator()).build();
-        SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%").colors(clSilabicas).itemIconImgSrc(R.drawable.ic_silabica).generator(new SyllabicPasswordGenerator()).dialogFragment(new OpcoesSenhaDialogFragment()).build();
+        CommonPasswordOptionsDialogFragment dialogFragment = new CommonPasswordOptionsDialogFragment();
 
-
+        SenhaMenuItem simplyPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Aleatorias").subTitle(" Ex: a1&bC2*").itemIconImgSrc(R.drawable.ic_aleatoria).generator(new SimplyPasswordGenerator()).dialogFragment(dialogFragment).build();
+        SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%").itemIconImgSrc(R.drawable.ic_silabica).generator(new SyllabicPasswordGenerator()).dialogFragment(new CommonPasswordOptionsDialogFragment()).build();
         InputStream is = getResources().openRawResource(R.raw.ptbr);
         PasswordGenerator senhaConcatenadaGenerator = new ConcatenatedPasswordGenerator(new BufferedReader(new InputStreamReader(is)));
-        SenhaMenuItem concatenatedPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Concatenadas").subTitle(" Ex: casa@tapete@ferro").colors(clConcatenadas).itemIconImgSrc(R.drawable.ic_concatenada).generator(senhaConcatenadaGenerator).build();
-
+        SenhaMenuItem concatenatedPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Concatenadas").subTitle(" Ex: casa@tapete@ferro").itemIconImgSrc(R.drawable.ic_concatenada).generator(senhaConcatenadaGenerator).build();
         OverflowMenuRecyclerViewAdapter.ViewModel.createNew(simplyPasswordMenuItem).addTo(lista);
         OverflowMenuRecyclerViewAdapter.ViewModel.createNew(syllabicPasswordMenuItem).addTo(lista);
         OverflowMenuRecyclerViewAdapter.ViewModel.createNew(concatenatedPasswordMenuItem).addTo(lista);
@@ -162,14 +157,18 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
 
     @Override
     public void onItemClick(OverflowMenuRecyclerViewAdapter.ViewModel viewModel) {
-        setGerador(viewModel.getSenhaMenuItem().getGenerator());
+        setActiveMenuItem(viewModel.getSenhaMenuItem());
         sessionTitleTextView.setText(viewModel.getSenhaMenuItem().getTitle());
         drawerLayout.closeDrawer(overflowMenuRecyclerView);
     }
 
-    public void setGerador(PasswordGenerator gerador) {
-        System.out.println(gerador.getClass().getName());
-        Log.d(TAG,""+gerador.getClass());
-        this.gerador = gerador;
+    private void setActiveMenuItem(SenhaMenuItem senhaMenuItem) {
+        this.activeMenuItem = senhaMenuItem;
+    }
+
+    @Override
+    public void onButtonClick(String tags, Integer passwordSize, Map<String, Boolean> selectedCharGroups) {
+        Toast.makeText(getApplicationContext(),tags,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),""+passwordSize, Toast.LENGTH_SHORT).show();
     }
 }
