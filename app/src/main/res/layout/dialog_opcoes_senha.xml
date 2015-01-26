@@ -12,12 +12,6 @@
         android:text="Usar na senha:"
         />
 
-    <LinearLayout
-        android:id="@+id/include_on_pass_groupview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
         <CheckedTextView
             android:id="@+id/numbers_checkbox"
             android:layout_width="match_parent"
@@ -25,7 +19,6 @@
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:checked="true"
             android:gravity="center_vertical"
-            android:tag="numbers"
             android:text="@string/numeros"
             android:textIsSelectable="true"
              />
@@ -38,7 +31,6 @@
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:checked="true"
             android:gravity="center_vertical"
-            android:tag="lower"
             android:text="@string/minusculas"
             android:textIsSelectable="true"
             />
@@ -50,8 +42,6 @@
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:checked="false"
             android:gravity="center_vertical"
-            android:minHeight="48dp"
-            android:tag="upper"
             android:text="@string/maiusculas"
             android:textIsSelectable="true"
             />
@@ -63,12 +53,10 @@
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:checked="false"
             android:gravity="center_vertical"
-            android:tag="special"
             android:text="@string/caracteres_especiais"
             android:textIsSelectable="true"
             />
 
-    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -125,8 +113,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
             android:completionThreshold="1"
-            android:ems="2"
-            android:gravity="center_vertical"
+            android:ems="3"
+            android:text="10"
+            android:gravity="center"
             android:inputType="number"
             android:selectAllOnFocus="true"
             />

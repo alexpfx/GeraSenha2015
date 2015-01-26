@@ -18,4 +18,8 @@ public class SelectInverseCheckboxTouch implements View.OnTouchListener {
         return true;
     }
 
+    public static void createAndAttachTo (View view){
+        view.setOnTouchListener(new SelectInverseCheckboxTouch());
+    }
+
 }

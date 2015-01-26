@@ -170,13 +170,12 @@ public class MainActivity extends ActionBarActivity implements OverflowMenuRecyc
     }
 
     @Override
-    public void onCommonOptionsDialogPasswordPositiveButtonClick(String tags, String passwordSize, Map<String, Boolean> selectedCharGroups) {
+    public void onCommonOptionsDialogPasswordPositiveButtonClick(String tags, Integer passwordSize, Map<String, Boolean> selectedCharGroups) {
         Boolean numbers = selectedCharGroups.get("numbers");
         Boolean alpha = selectedCharGroups.get("lower");
         Boolean upper = selectedCharGroups.get("upper");
         Boolean special = selectedCharGroups.get("special");
-        Integer size = StringUtils.isBlank(passwordSize)?12:Integer.parseInt(passwordSize);
-        SimplyPasswordOptions options = new SimplyPasswordOptions.Builder().size(size).alpha(alpha).alphaUpperCase(upper).specialChars(special).numbers(numbers).build();
+        SimplyPasswordOptions options = new SimplyPasswordOptions.Builder().size(passwordSize).alpha(alpha).alphaUpperCase(upper).specialChars(special).numbers(numbers).build();
         try {
             options.validate();
             activeMenuItem.getGenerator().setPasswordOptions(options);
