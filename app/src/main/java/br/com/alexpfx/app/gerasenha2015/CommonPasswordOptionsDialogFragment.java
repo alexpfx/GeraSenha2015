@@ -17,9 +17,6 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import br.com.alexandrealessi.gerasenha2015.R;
 
 /**
@@ -36,37 +33,41 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
         listener = (OnCommonPasswordOptionsPositiveButtonClick) activity;
     }
 
-
-    public String getTextViewText(View parent, int resId) {
-        TextView tv = (TextView) parent.findViewById(resId);
-        return tv.getText().toString();
-    }
-
-    public View getView(View parent, int resId) {
-        return parent.findViewById(resId);
-    }
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View baseView = inflater.inflate(R.layout.dialog_opcoes_senha, null);
-
-        final AutoCompleteTextView passwordSizeView = (AutoCompleteTextView) baseView.findViewById(R.id.password_size_autocompletetextview);
-        final Integer[] passwordSizeArray = ArrayUtils.toObject(getResources().getIntArray(R.array.password_sizes));
+        final AutoCompleteTextView passwordSizeView = (AutoCompleteTextView) baseView.findViewById(R.id.password_length_textview);
+        Integer[] passwordSizeArray = ArrayUtils.toObject(getResources().getIntArray(R.array.password_sizes));
         passwordSizeView.setAdapter(new ArrayAdapter<Integer>(passwordSizeView.getContext(), android.R.layout.simple_list_item_1, passwordSizeArray));
 
-        attachCheckBoxSelectInverseListener(baseView);
+        final TextView tagsTextView = (TextView) ViewUtils.getView(baseView, R.id.tag_textview);
+        final TextView passwordMaxLength = (TextView) ViewUtils.getView(baseView, R.id.password_length_textview);
+
+        final Checkable numbersChk = (Checkable) ViewUtils.getView(baseView, R.id.numbers_checkbox);
+        SelectInverseCheckboxTouch.createAndAttachTo(numbersChk);
+        final Checkable lowerChk = (Checkable) ViewUtils.getView(baseView, R.id.lower_checkbox);
+        SelectInverseCheckboxTouch.createAndAttachTo(lowerChk);
+        final Checkable upperChk = (Checkable) ViewUtils.getView(baseView, R.id.upper_checkbox);
+        SelectInverseCheckboxTouch.createAndAttachTo(upperChk);
+        final Checkable specialChk = (Checkable) ViewUtils.getView(baseView, R.id.special_checkbox);
+        SelectInverseCheckboxTouch.createAndAttachTo(specialChk);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(baseView);
         builder.setPositiveButton(R.string.gerar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                processPositiveButton(baseView, passwordSizeView);
+                CommonPasswordOptionsViewModel options = new CommonPasswordOptionsViewModel.Builder()
+                        .tags(tagsTextView.getText().toString())
+                        .passwordSize(passwordMaxLength.getText().toString())
+                        .hasNumbers(numbersChk.isChecked())
+                        .hasLowerCase(lowerChk.isChecked())
+                        .hasUpperCase(upperChk.isChecked())
+                        .hasSpecialChars(specialChk.isChecked()).build();
+                listener.onCommonOptionsDialogPasswordPositiveButtonClick(options);
             }
         });
-
 
         builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
             @Override
@@ -78,43 +79,7 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    private boolean getCheckableValue(Checkable chk) {
-        return chk.isChecked();
-    }
-
-    private void processPositiveButton(View parentView, TextView passwordSizeView) {
-        Map<String, Boolean> selected = new HashMap<>();
-        selected.put("numbers", getCheckableValue((Checkable) getView(parentView, R.id.numbers_checkbox)));
-        selected.put("lower", getCheckableValue((Checkable) getView(parentView, R.id.lower_checkbox)));
-        selected.put("upper", getCheckableValue((Checkable) getView(parentView, R.id.upper_checkbox)));
-        selected.put("special", getCheckableValue((Checkable) getView(parentView, R.id.special_checkbox)));
-
-        final String tags = getTextViewText(parentView, R.id.password_tags_edittext);
-        int passwordsize;
-        try {
-            passwordsize = Integer.valueOf(passwordSizeView.getText().toString());
-        } catch (NumberFormatException e) {
-            passwordsize = 0;
-        }
-        listener.onCommonOptionsDialogPasswordPositiveButtonClick(tags, passwordsize, selected);
-    }
-
-
-    private void attachCheckBoxSelectInverseListener(View paraentView) {
-        View numbersCheckBox = getView(paraentView, R.id.numbers_checkbox);
-        SelectInverseCheckboxTouch.createAndAttachTo(numbersCheckBox);
-        View lowerCheckBox = getView(paraentView, R.id.lower_checkbox);
-        SelectInverseCheckboxTouch.createAndAttachTo(lowerCheckBox);
-        View upperCheckBox = getView(paraentView, R.id.upper_checkbox);
-        SelectInverseCheckboxTouch.createAndAttachTo(upperCheckBox);
-        View specialCheckBox = getView(paraentView, R.id.special_checkbox);
-        SelectInverseCheckboxTouch.createAndAttachTo(specialCheckBox);
-    }
-
-
     public interface OnCommonPasswordOptionsPositiveButtonClick {
-        void onCommonOptionsDialogPasswordPositiveButtonClick(String tags, Integer passwordSize, Map<String, Boolean> selectedCharGroups);
-    }
-
-
+        void onCommonOptionsDialogPasswordPositiveButtonClick(CommonPasswordOptionsViewModel options);
+    }//85
 }

@@ -9,61 +9,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Usar na senha:"
-        />
+        android:text="Usar na senha:" />
 
-        <CheckedTextView
-            android:id="@+id/numbers_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="true"
-            android:gravity="center_vertical"
-            android:text="@string/numeros"
-            android:textIsSelectable="true"
-             />
+    <CheckedTextView
+        android:id="@+id/numbers_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text="@string/numeros"
+        android:textIsSelectable="true" />
 
 
-        <CheckedTextView
-            android:id="@+id/lower_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="true"
-            android:gravity="center_vertical"
-            android:text="@string/minusculas"
-            android:textIsSelectable="true"
-            />
+    <CheckedTextView
+        android:id="@+id/lower_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text="@string/minusculas"
+        android:textIsSelectable="true" />
 
-        <CheckedTextView
-            android:id="@+id/upper_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="false"
-            android:gravity="center_vertical"
-            android:text="@string/maiusculas"
-            android:textIsSelectable="true"
-            />
+    <CheckedTextView
+        android:id="@+id/upper_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="false"
+        android:gravity="center_vertical"
+        android:text="@string/maiusculas"
+        android:textIsSelectable="true" />
 
-        <CheckedTextView
-            android:id="@+id/special_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="false"
-            android:gravity="center_vertical"
-            android:text="@string/caracteres_especiais"
-            android:textIsSelectable="true"
-            />
+    <CheckedTextView
+        android:id="@+id/special_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="false"
+        android:gravity="center_vertical"
+        android:text="@string/caracteres_especiais"
+        android:textIsSelectable="true" />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Opções de senha:"
-        />
+        android:text="Opções de senha:" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,17 +67,14 @@
 
 
         <TextView
-            android:id="@+id/tag_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:gravity="center_vertical"
-            android:text="Tags:"
-
-            />
+            android:text="Tags:" />
 
         <EditText
-            android:id="@+id/password_tags_edittext"
+            android:id="@+id/tag_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
@@ -108,17 +99,16 @@
             />
 
         <AutoCompleteTextView
-            android:id="@+id/password_size_autocompletetextview"
+            android:id="@+id/password_length_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
             android:completionThreshold="1"
             android:ems="3"
-            android:text="10"
             android:gravity="center"
             android:inputType="number"
             android:selectAllOnFocus="true"
-            />
+            android:text="10" />
 
     </FrameLayout>
 
