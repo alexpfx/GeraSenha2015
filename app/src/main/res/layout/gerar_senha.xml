@@ -1,37 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:stretchColumns="2"
+
     >
 
-    <TextView
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:paddingLeft="8dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="nonononono@@nononono"
-        android:id="@+id/generated_password_textview"
-        android:textColor="@color/md_white_1000"
-        android:gravity="center_vertical"
-        android:textStyle="bold"
-        android:layout_alignParentLeft="true"
-         />
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/password_tag_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_span="2"
+            android:text="tag: email"
+            android:textColor="@color/md_white_1000"
+            android:textSize="13sp" />
+
+
+        <TextView
+            android:id="@+id/gen_date_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_gravity="center"
+            android:text="00:00"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/md_white_1000"
+            android:textSize="13sp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:background="@color/md_white_1000" />
+
+    </TableRow>
+
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="left">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_weight="0"
+                android:singleLine="false"
+                android:text="Senha Gerada:"
+                android:textSize="10sp"
+                android:textColor="@color/md_white_1000"
+                android:textStyle="bold"
+                android:id="@+id/textView2" />
+
+            <TextView
+                android:id="@+id/generated_password_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|left"
+                android:layout_weight="1"
+                android:singleLine="false"
+                android:text="nononononsxxxxxxxxxxxxxxxxxxxxx"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/md_white_1000"
+                android:textStyle="bold"
+                android:layout_below="@+id/textView2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:background="@color/md_white_1000" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            >
+
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/ic_action_copy"
+                android:tint="@color/md_white_1000" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@android:drawable/ic_menu_share"
+                android:tint="@color/md_white_1000" />
+        </LinearLayout>
+    </TableRow>
+
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        >
+        android:layout_alignParentRight="true">
 
-    <ImageButton
-        android:id="@+id/new_pass_button"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:background="@drawable/circle"
-        android:elevation="2dp"
-        android:src="@drawable/ic_action_new"
-        />
+        <ImageButton
+            android:id="@+id/btn_new_password"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/circle"
+            android:elevation="2dp"
+            android:src="@drawable/ic_action_new" />
     </FrameLayout>
 
-</RelativeLayout>
+
+</TableLayout>

@@ -1,9 +1,12 @@
 package br.com.alexpfx.app.gerasenha2015;
 
+import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordOptions;
+
 /**
  * Created by alexandre on 26/01/15.
  */
 public class ConcatenatedPasswordOptionsViewModel {
+
     private String tags;
     private boolean includeUpper;
     private String nrWords;

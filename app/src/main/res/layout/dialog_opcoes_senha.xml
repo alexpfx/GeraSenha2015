@@ -58,58 +58,59 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Opções de senha:" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:gravity="center_vertical"
-            android:text="Tags:" />
-
-        <EditText
-            android:id="@+id/tag_textview"
+    <!--
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center"
-            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
 
-            />
-    </LinearLayout>
+        android:orientation="horizontal">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:gravity="center_vertical"
+                    android:text="Tags:" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:gravity="center_vertical"
-            android:text="Tamanho:"
+                <EditText
+                    android:id="@+id/tag_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:gravity="center_vertical"
 
-            />
+                    />
+            </LinearLayout>
+            -->
 
-        <AutoCompleteTextView
-            android:id="@+id/password_length_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center"
-            android:completionThreshold="1"
-            android:ems="3"
-            android:gravity="center"
-            android:inputType="number"
-            android:selectAllOnFocus="true"
-            android:text="10" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
 
-    </FrameLayout>
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:gravity="center_vertical"
+                    android:text="Tamanho:"
 
-</LinearLayout>
+                    />
+
+                <AutoCompleteTextView
+                    android:id="@+id/password_length_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:completionThreshold="1"
+                    android:ems="3"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:selectAllOnFocus="true"
+                    android:text="10" />
+
+            </FrameLayout>
+
+        </LinearLayout>

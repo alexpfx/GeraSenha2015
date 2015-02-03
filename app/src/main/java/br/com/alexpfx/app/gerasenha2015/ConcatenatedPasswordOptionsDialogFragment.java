@@ -9,21 +9,28 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Checkable;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import br.com.alexandrealessi.gerasenha2015.R;
+import br.com.alexpfx.app.gerasenha2015.model.ConcatenatedOptionsWrapper;
+import br.com.alexpfx.app.gerasenha2015.model.IPasswordOptionsWrapper;
 
 /**
  * Created by alexandre on 25/01/15.
  */
 public class ConcatenatedPasswordOptionsDialogFragment extends DialogFragment {
 
-    private OnConcatenatedPasswordOptionsPositiveButtonClick listener;
+    private OnOptionsChange listener;
 
     @Override
     public void onAttach(Activity activity) {
-        listener = (OnConcatenatedPasswordOptionsPositiveButtonClick) activity;
+        listener = (OnOptionsChange) activity;
         super.onAttach(activity);
     }
 
@@ -38,20 +45,27 @@ public class ConcatenatedPasswordOptionsDialogFragment extends DialogFragment {
         final Checkable includeUpperCheckBox = (Checkable) ViewUtils.getView(baseView, R.id.incluir_maiusculas_checkbox);
         SelectInverseCheckboxTouch.createAndAttachTo(includeUpperCheckBox);
 
-        final TextView tagsTv = (TextView) ViewUtils.getView(baseView, R.id.password_tag_textview);
-        final TextView nrWordsTv = (TextView) ViewUtils.getView(baseView, R.id.nr_words_textview);
-        final TextView maxLengthTv = (TextView) ViewUtils.getView(baseView, R.id.password_max_length_textview);
+//        final TextView tagsTv = (TextView) ViewUtils.getView(baseView, R.id.password_tag_textview);
+
+        final AutoCompleteTextView nrWordsTv = (AutoCompleteTextView) ViewUtils.getView(baseView, R.id.nr_words_textview);
+        Integer[] wordCount = ArrayUtils.toObject(getResources().getIntArray(R.array.word_count));
+        nrWordsTv.setAdapter(new ArrayAdapter<Integer>(nrWordsTv.getContext(), android.R.layout.simple_list_item_1, wordCount));
+
+        Integer[] passwordMaxSizeArray = ArrayUtils.toObject(getResources().getIntArray(R.array.password_max_sizes));
+        final AutoCompleteTextView maxLengthTv = (AutoCompleteTextView) ViewUtils.getView(baseView, R.id.password_max_length_textview);
+        maxLengthTv.setAdapter(new ArrayAdapter<Integer>(nrWordsTv.getContext(), android.R.layout.simple_list_item_1, passwordMaxSizeArray));
+
+
         final TextView separatorsTv = (TextView) ViewUtils.getView(baseView, R.id.separators_textview);
 
         builder.setPositiveButton("Gerar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ConcatenatedPasswordOptionsViewModel options = new ConcatenatedPasswordOptionsViewModel.Builder()
-                        .includeUpper(includeUpperCheckBox.isChecked())
-                        .maxLength(nrWordsTv.getText().toString())
-                        .tags(tagsTv.getText().toString())
-                        .separators(separatorsTv.getText().toString()).build();
-                listener.onConcatenatedPasswordOptionsPositiveButtonClick(options);
+                Integer nrWord = StringUtils.isBlank(nrWordsTv.getText())?null:Integer.valueOf(nrWordsTv.getText().toString());
+                Integer maxLen = StringUtils.isBlank(maxLengthTv.getText())?null:Integer.valueOf(maxLengthTv.getText().toString());
+                Boolean includeUpper = includeUpperCheckBox.isChecked();
+                String separators = separatorsTv.getText().toString();
+                listener.onOptionsChange(new ConcatenatedOptionsWrapper.Builder().includeUpper(includeUpper).maxLength(maxLen).nrWords(nrWord).separators(separators).build());
             }
         });
 
@@ -59,14 +73,12 @@ public class ConcatenatedPasswordOptionsDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-
-
             }
         });
         return builder.create();
     }
 
-    public interface OnConcatenatedPasswordOptionsPositiveButtonClick {
-        void onConcatenatedPasswordOptionsPositiveButtonClick(ConcatenatedPasswordOptionsViewModel optionsViewModel);
+    public interface OnOptionsChange {
+        void onOptionsChange(IPasswordOptionsWrapper newOptions);
     }
 }

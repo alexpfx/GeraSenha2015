@@ -30,7 +30,6 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        listener = (OnCommonPasswordOptionsPositiveButtonClick) activity;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
         Integer[] passwordSizeArray = ArrayUtils.toObject(getResources().getIntArray(R.array.password_sizes));
         passwordSizeView.setAdapter(new ArrayAdapter<Integer>(passwordSizeView.getContext(), android.R.layout.simple_list_item_1, passwordSizeArray));
 
-        final TextView tagsTextView = (TextView) ViewUtils.getView(baseView, R.id.tag_textview);
+//        final TextView tagsTextView = (TextView) ViewUtils.getView(baseView, R.id.tag_textview);
         final TextView passwordMaxLength = (TextView) ViewUtils.getView(baseView, R.id.password_length_textview);
 
         final Checkable numbersChk = (Checkable) ViewUtils.getView(baseView, R.id.numbers_checkbox);
@@ -59,13 +58,15 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 CommonPasswordOptionsViewModel options = new CommonPasswordOptionsViewModel.Builder()
-                        .tags(tagsTextView.getText().toString())
+//                        .tags(tagsTextView.getText().toString())
                         .passwordSize(passwordMaxLength.getText().toString())
                         .hasNumbers(numbersChk.isChecked())
                         .hasLowerCase(lowerChk.isChecked())
                         .hasUpperCase(upperChk.isChecked())
                         .hasSpecialChars(specialChk.isChecked()).build();
-                listener.onCommonOptionsDialogPasswordPositiveButtonClick(options);
+                if (listener != null){
+                    listener.onCommonOptionsDialogPasswordPositiveButtonClick(options);
+                }
             }
         });
 
@@ -82,4 +83,8 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
     public interface OnCommonPasswordOptionsPositiveButtonClick {
         void onCommonOptionsDialogPasswordPositiveButtonClick(CommonPasswordOptionsViewModel options);
     }//85
+
+    public void setListener(OnCommonPasswordOptionsPositiveButtonClick listener) {
+        this.listener = listener;
+    }
 }
