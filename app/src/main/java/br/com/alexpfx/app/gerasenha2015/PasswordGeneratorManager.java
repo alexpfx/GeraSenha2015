@@ -10,17 +10,13 @@ import br.com.alexpfx.supersenha.lib.PasswordOptions;
 /**
  * Created by alexandre on 01/02/15.
  */
-public class PasswordGeneratorManager implements ConcatenatedPasswordOptionsDialogFragment.OnOptionsChange{
+public class PasswordGeneratorManager implements OnOptionsChanged{
     private PasswordGenerator generator;
     private DialogFragment passwordOptionsDialog;
-    private final FragmentManager fragmentManager;
+
     private PasswordOptions currentOptions;
 
-    public PasswordGeneratorManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
-    }
-
-    public void showGenerateOptionsDialog (){
+    public void showGenerateOptionsDialog (FragmentManager fragmentManager){
         if (passwordOptionsDialog != null){
             passwordOptionsDialog.show(fragmentManager, "mPasswordOptions");
         }
@@ -42,5 +38,9 @@ public class PasswordGeneratorManager implements ConcatenatedPasswordOptionsDial
 
     public void setPasswordOptionsDialog(DialogFragment passwordOptionsDialog) {
         this.passwordOptionsDialog = passwordOptionsDialog;
+    }
+
+    public static interface PasswordGeneratorManagerHolder {
+        PasswordGeneratorManager getPasswordGeneratorManager();
     }
 }

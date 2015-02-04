@@ -26,11 +26,11 @@ import br.com.alexpfx.app.gerasenha2015.model.IPasswordOptionsWrapper;
  */
 public class ConcatenatedPasswordOptionsDialogFragment extends DialogFragment {
 
-    private OnOptionsChange listener;
+    private OnOptionsChanged listener;
 
     @Override
     public void onAttach(Activity activity) {
-        listener = (OnOptionsChange) activity;
+        listener = (OnOptionsChanged) activity;
         super.onAttach(activity);
     }
 
@@ -78,7 +78,5 @@ public class ConcatenatedPasswordOptionsDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public interface OnOptionsChange {
-        void onOptionsChange(IPasswordOptionsWrapper newOptions);
-    }
+
 }

@@ -10,8 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -20,23 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alexandrealessi.gerasenha2015.R;
-import br.com.alexpfx.app.gerasenha2015.model.IPasswordOptionsWrapper;
 import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordGenerator;
-import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordOptions;
 import br.com.alexpfx.supersenha.lib.PasswordGenerator;
-import br.com.alexpfx.supersenha.lib.PasswordOptionsException;
 import br.com.alexpfx.supersenha.lib.SimplyPasswordGenerator;
-import br.com.alexpfx.supersenha.lib.SimplyPasswordOptions;
 import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
 
-import static br.com.alexpfx.app.gerasenha2015.CommonPasswordOptionsDialogFragment.OnCommonPasswordOptionsPositiveButtonClick;
 import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.OnItemClick;
 import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.ViewModel;
 
 
-
-
-public class MainActivity extends ActionBarActivity implements OnItemClick{
+public class MainActivity extends ActionBarActivity implements OnItemClick, PasswordGeneratorManager.PasswordGeneratorManagerHolder {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -49,6 +43,7 @@ public class MainActivity extends ActionBarActivity implements OnItemClick{
     private ActionBarDrawerToggle drawerToggle;
     private TextView generatedPassTextView;
     private SenhaMenuItem activeMenuItem;
+    private PasswordGeneratorManager manager;
 
 
     @Override
@@ -63,18 +58,6 @@ public class MainActivity extends ActionBarActivity implements OnItemClick{
 
     private void setupButtons() {
 
-//        final ImageButton geraSenhaButton = (ImageButton) findViewById(R.id.btn_new_password);
-//        geraSenhaButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (activeMenuItem == null) {
-//
-//
-//                } else {
-//                    activeMenuItem.getDialogFragment().show(getSupportFragmentManager(), "passwordOptions");
-//                }
-//            }
-//        });
     }
 
 
@@ -170,6 +153,12 @@ public class MainActivity extends ActionBarActivity implements OnItemClick{
     private void setActiveMenuItem(SenhaMenuItem senhaMenuItem) {
         this.activeMenuItem = senhaMenuItem;
     }
+
+    @Override
+    public PasswordGeneratorManager getPasswordGeneratorManager() {
+        return manager;
+    }
+
 
 //    @Override
 //    public void onCommonOptionsDialogPasswordPositiveButtonClick(CommonPasswordOptionsViewModel commonPasswordOptions) {

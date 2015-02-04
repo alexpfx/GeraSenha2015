@@ -14,5 +14,6 @@
     <string name="maiusculas">Letras Maiúsculas</string>
     <string name="caracteres_especiais">Caractéres Especiais</string>
     <string name="iniciais_maiusculas">Iniciais Maiúsculas</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
