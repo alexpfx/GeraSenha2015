@@ -10,8 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -21,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alexandrealessi.gerasenha2015.R;
+import br.com.alexpfx.app.gerasenha2015.model.Password;
 import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordGenerator;
 import br.com.alexpfx.supersenha.lib.PasswordGenerator;
 import br.com.alexpfx.supersenha.lib.SimplyPasswordGenerator;
@@ -28,9 +27,10 @@ import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
 
 import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.OnItemClick;
 import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.ViewModel;
+import static br.com.alexpfx.app.gerasenha2015.PasswordGeneratorManager.*;
 
 
-public class MainActivity extends ActionBarActivity implements OnItemClick, PasswordGeneratorManager.PasswordGeneratorManagerHolder {
+public class MainActivity extends ActionBarActivity implements OnItemClick, PasswordGeneratorManagerHolder{
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -43,7 +43,7 @@ public class MainActivity extends ActionBarActivity implements OnItemClick, Pass
     private ActionBarDrawerToggle drawerToggle;
     private TextView generatedPassTextView;
     private SenhaMenuItem activeMenuItem;
-    private PasswordGeneratorManager manager;
+    private PasswordGeneratorManager passwordGeneratorManager;
 
 
     @Override
@@ -59,7 +59,6 @@ public class MainActivity extends ActionBarActivity implements OnItemClick, Pass
     private void setupButtons() {
 
     }
-
 
     private String genPasswordByTypeStatus() {
         return "";
@@ -81,22 +80,34 @@ public class MainActivity extends ActionBarActivity implements OnItemClick, Pass
         overflowMenuRecyclerView.setAdapter(overflowMenuRecyclerViewAdapter);
     }
 
-
-    public void showPasswordOptionsDialog() {
-
-
-    }
-
     private List<OverflowMenuRecyclerViewAdapter.ViewModel> setupMenuItems() {
         List<OverflowMenuRecyclerViewAdapter.ViewModel> lista = new ArrayList<OverflowMenuRecyclerViewAdapter.ViewModel>();
         //TODO externalizar strings
         CommonPasswordOptionsDialogFragment dialogFragment = new CommonPasswordOptionsDialogFragment();
 
-        SenhaMenuItem simplyPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Aleatorias").subTitle(" Ex: a1&bC2*").itemIconImgSrc(R.drawable.ic_aleatoria).generator(new SimplyPasswordGenerator()).dialogFragment(dialogFragment).build();
-        SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%").itemIconImgSrc(R.drawable.ic_silabica).generator(new SyllabicPasswordGenerator()).dialogFragment(new CommonPasswordOptionsDialogFragment()).build();
+        SenhaMenuItem simplyPasswordMenuItem = new SenhaMenuItem.Builder()
+                .title("Senhas Aleatorias")
+                .subTitle(" Ex: a1&bC2*")
+                .itemIconImgSrc(R.drawable.ic_aleatoria)
+                .passwordGeneratorManager(new PasswordGeneratorManager(new SimplyPasswordGenerator(), new CommonPasswordOptionsDialogFragment()))
+                .build();
+
+        SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder()
+                .title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%")
+                .itemIconImgSrc(R.drawable.ic_silabica)
+                .passwordGeneratorManager(new PasswordGeneratorManager(new SyllabicPasswordGenerator(), new CommonPasswordOptionsDialogFragment()))
+                .build();
+
         InputStream is = getResources().openRawResource(R.raw.ptbr);
         PasswordGenerator senhaConcatenadaGenerator = new ConcatenatedPasswordGenerator(new BufferedReader(new InputStreamReader(is)));
-        SenhaMenuItem concatenatedPasswordMenuItem = new SenhaMenuItem.Builder().title("Senhas Concatenadas").subTitle(" Ex: casa@tapete@ferro").itemIconImgSrc(R.drawable.ic_concatenada).generator(senhaConcatenadaGenerator).dialogFragment(new ConcatenatedPasswordOptionsDialogFragment()).build();
+
+        SenhaMenuItem concatenatedPasswordMenuItem = new SenhaMenuItem.Builder()
+                .title("Senhas Concatenadas")
+                .subTitle(" Ex: casa@tapete@ferro")
+                .itemIconImgSrc(R.drawable.ic_concatenada)
+                .passwordGeneratorManager(new PasswordGeneratorManager(senhaConcatenadaGenerator, new ConcatenatedPasswordOptionsDialogFragment()))
+                .build();
+
         ViewModel.createNew(simplyPasswordMenuItem).addTo(lista);
         ViewModel.createNew(syllabicPasswordMenuItem).addTo(lista);
         ViewModel.createNew(concatenatedPasswordMenuItem).addTo(lista);
@@ -148,6 +159,7 @@ public class MainActivity extends ActionBarActivity implements OnItemClick, Pass
     public void onItemClick(ViewModel viewModel) {
         sessionTitleTextView.setText(viewModel.getSenhaMenuItem().getTitle());
         drawerLayout.closeDrawer(overflowMenuRecyclerView);
+        passwordGeneratorManager = viewModel.getSenhaMenuItem().getPasswordGeneratorManager();
     }
 
     private void setActiveMenuItem(SenhaMenuItem senhaMenuItem) {
@@ -156,60 +168,7 @@ public class MainActivity extends ActionBarActivity implements OnItemClick, Pass
 
     @Override
     public PasswordGeneratorManager getPasswordGeneratorManager() {
-        return manager;
+        return passwordGeneratorManager;
     }
-
-
-//    @Override
-//    public void onCommonOptionsDialogPasswordPositiveButtonClick(CommonPasswordOptionsViewModel commonPasswordOptions) {
-//        Boolean numbers = commonPasswordOptions.isHasNumbers();
-//        Boolean alpha = commonPasswordOptions.isHasLowerCase();
-//        Boolean upper = commonPasswordOptions.isHasUpperCase();
-//        Boolean special = commonPasswordOptions.isHasSpecialChars();
-//
-//        Integer passwordSize;
-//        try {
-//            passwordSize = Integer.valueOf(commonPasswordOptions.getPasswordSize());
-//        } catch (NumberFormatException e) {
-//            passwordSize = 0;
-//        }
-//
-//        SimplyPasswordOptions options = new SimplyPasswordOptions.Builder().size(passwordSize).alpha(alpha).alphaUpperCase(upper).specialChars(special).numbers(numbers).build();
-//        try {
-//            options.validate();
-//            activeMenuItem.getGenerator().setPasswordOptions(options);
-//            generatedPassTextView.setText(activeMenuItem.getGenerator().generatePassword());
-//            Toast.makeText(getApplicationContext(), "Senha Gerada", Toast.LENGTH_SHORT).show();
-//        } catch (PasswordOptionsException e) {
-//            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-
-//    @Override
-//    public void onOptionsChange(IPasswordOptionsWrapper newOptions) {
-//        newOptions.getPasswordOptions();
-//        Integer maxSize;
-//        try {
-//            maxSize = Integer.valueOf(newOptions.getMaxLength());
-//        } catch (NumberFormatException e) {
-//            maxSize = ConcatenatedPasswordOptions.DEFAULT_MAX_SIZE;
-//        }
-//        Integer numberOfWords;
-//        try {
-//            numberOfWords = Integer.valueOf(newOptions.getNrWords());
-//        } catch (NumberFormatException e) {
-//            numberOfWords = ConcatenatedPasswordOptions.DEFAULT_WORD_COUNT;
-//        }
-//
-//        String separators = newOptions.getSeparators();
-//        String tags = newOptions.getTags();
-//
-//        ConcatenatedPasswordOptions options = new ConcatenatedPasswordOptions.Builder().maxSize(maxSize).numberOfWords(numberOfWords).separator(separators).build();
-//        activeMenuItem.getGenerator().setPasswordOptions(options);
-//        generatedPassTextView.setText(activeMenuItem.getGenerator().generatePassword());
-//        Toast.makeText(getApplicationContext(), "Senha Gerada", Toast.LENGTH_SHORT).show();
-//
-//    }
 
 }

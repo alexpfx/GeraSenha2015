@@ -10,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import br.com.alexandrealessi.gerasenha2015.R;
 import br.com.alexpfx.app.gerasenha2015.OnOptionsChanged;
@@ -27,6 +30,7 @@ public class CurrentPasswordFragment extends Fragment {
 
     private OnOptionsChanged listener;
     private PasswordGeneratorManager.PasswordGeneratorManagerHolder passwordGeneratorManagerHolder;
+    private TextView currentPasswordTextView;
 
 
     @Override
@@ -42,6 +46,8 @@ public class CurrentPasswordFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_current_password, container, false);
 
         ImageButton btnPasswordSettings = (ImageButton) v.findViewById(R.id.btn_password_settings);
+        //TODO: acertar padrao de nomes das views
+        currentPasswordTextView = (TextView) v.findViewById(R.id.current_password_textView);
 
         btnPasswordSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,19 +60,10 @@ public class CurrentPasswordFragment extends Fragment {
         geraSenhaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO chamar listener
-                passwordGeneratorManagerHolder.getPasswordGeneratorManager().generate();
+                String generate = passwordGeneratorManagerHolder.getPasswordGeneratorManager().generate();
+                currentPasswordTextView.setText(generate);
             }
         });
-
-
-
-
-
-
-
-
-
         return v;
     }
 
