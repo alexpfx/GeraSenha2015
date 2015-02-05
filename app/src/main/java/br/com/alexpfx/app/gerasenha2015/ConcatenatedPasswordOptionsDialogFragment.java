@@ -19,18 +19,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import br.com.alexandrealessi.gerasenha2015.R;
 import br.com.alexpfx.app.gerasenha2015.model.ConcatenatedOptionsWrapper;
-import br.com.alexpfx.app.gerasenha2015.model.IPasswordOptionsWrapper;
 
 /**
  * Created by alexandre on 25/01/15.
  */
 public class ConcatenatedPasswordOptionsDialogFragment extends DialogFragment {
 
-    private OnOptionsChanged listener;
+    private OptionsChangedCallback listener;
 
     @Override
     public void onAttach(Activity activity) {
-        listener = (OnOptionsChanged) activity;
+        listener = (OptionsChangedCallback) activity;
         super.onAttach(activity);
     }
 

@@ -1,7 +1,7 @@
 package br.com.alexpfx.app.gerasenha2015;
 
 
-import android.content.Context;
+import br.com.alexpfx.app.gerasenha2015.managers.PasswordGeneratorManager;
 
 /**
  * Created by alexandre on 19/01/15.

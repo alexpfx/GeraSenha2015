@@ -5,38 +5,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import br.com.alexandrealessi.gerasenha2015.R;
-import br.com.alexpfx.app.gerasenha2015.OnOptionsChanged;
-import br.com.alexpfx.app.gerasenha2015.PasswordGeneratorManager;
+import br.com.alexpfx.app.gerasenha2015.managers.PasswordGeneratorManager;
 
 /**
  * Created by alexandre on 01/02/15.
  */
 public class CurrentPasswordFragment extends Fragment {
 
-    private FragmentActivity mContext;
+    OnNewPasswordListener onNewPasswordListener;
     private DialogFragment passwordOptionsDialog;
-    private PasswordGeneratorManager manager;
-
-    private OnOptionsChanged listener;
-    private PasswordGeneratorManager.PasswordGeneratorManagerHolder passwordGeneratorManagerHolder;
-    private TextView currentPasswordTextView;
-
+    private PasswordGeneratorManager passwordGeneratorManager;
+    private TextView tvCurrentPassword;
 
     @Override
     public void onAttach(Activity activity) {
-        mContext = (FragmentActivity) activity;
-        passwordGeneratorManagerHolder =  (PasswordGeneratorManager.PasswordGeneratorManagerHolder) activity;
         super.onAttach(activity);
 
     }
@@ -45,14 +34,13 @@ public class CurrentPasswordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_current_password, container, false);
 
-        ImageButton btnPasswordSettings = (ImageButton) v.findViewById(R.id.btn_password_settings);
-        //TODO: acertar padrao de nomes das views
-        currentPasswordTextView = (TextView) v.findViewById(R.id.current_password_textView);
+        final ImageButton btnPasswordSettings = (ImageButton) v.findViewById(R.id.btn_password_settings);
+        tvCurrentPassword = (TextView) v.findViewById(R.id.current_password_textView);
 
         btnPasswordSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passwordGeneratorManagerHolder.getPasswordGeneratorManager().showGenerateOptionsDialog(mContext.getSupportFragmentManager());
+
             }
         });
 
@@ -60,18 +48,27 @@ public class CurrentPasswordFragment extends Fragment {
         geraSenhaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String generate = passwordGeneratorManagerHolder.getPasswordGeneratorManager().generate();
-                currentPasswordTextView.setText(generate);
+                if (passwordGeneratorManager != null) {
+                    String newPass = passwordGeneratorManager.generate();
+                    String oldPass = tvCurrentPassword.getText().toString();
+                    tvCurrentPassword.setText(newPass);
+                    if (onNewPasswordListener != null) {
+                        onNewPasswordListener.receivePassword(newPass, oldPass);
+                    }
+                }
             }
         });
         return v;
     }
 
-    public DialogFragment getPasswordOptionsDialog() {
-        return passwordOptionsDialog;
+    public void setPasswordGeneratorManager(PasswordGeneratorManager passwordGeneratorManager) {
+        this.passwordGeneratorManager = passwordGeneratorManager;
     }
 
-    public void setPasswordOptionsDialog(DialogFragment newPasswordOptionsDialog) {
-        passwordOptionsDialog = newPasswordOptionsDialog;
+    /**
+     * Listeners para outras operações com a password gerado ou com a atual.
+     */
+    public static interface OnNewPasswordListener {
+        public void receivePassword(String newPassword, String oldPassword);
     }
 }

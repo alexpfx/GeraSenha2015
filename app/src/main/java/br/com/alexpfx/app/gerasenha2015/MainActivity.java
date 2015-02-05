@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alexandrealessi.gerasenha2015.R;
-import br.com.alexpfx.app.gerasenha2015.model.Password;
+import br.com.alexpfx.app.gerasenha2015.managers.PasswordGeneratorManager;
 import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordGenerator;
 import br.com.alexpfx.supersenha.lib.PasswordGenerator;
 import br.com.alexpfx.supersenha.lib.SimplyPasswordGenerator;
@@ -27,7 +27,6 @@ import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
 
 import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.OnItemClick;
 import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.ViewModel;
-import static br.com.alexpfx.app.gerasenha2015.PasswordGeneratorManager.*;
 
 
 public class MainActivity extends ActionBarActivity implements OnItemClick, PasswordGeneratorManagerHolder{
