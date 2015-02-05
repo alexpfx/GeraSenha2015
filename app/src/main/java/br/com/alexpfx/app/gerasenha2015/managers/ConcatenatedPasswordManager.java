@@ -20,4 +20,6 @@ public class ConcatenatedPasswordManager extends PasswordGeneratorManager {
     public PasswordOptions getDefaultOptions() {
         return new ConcatenatedPasswordOptions.Builder().numberOfWords(3).separator("@").maxSize(60).build();
     }
+
+
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import br.com.alexandrealessi.gerasenha2015.R;
 import br.com.alexpfx.app.gerasenha2015.managers.PasswordGeneratorManager;
@@ -45,6 +46,7 @@ public class CurrentPasswordFragment extends Fragment {
         });
 
         final ImageButton geraSenhaButton = (ImageButton) v.findViewById(R.id.btn_new_password);
+
         geraSenhaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +65,7 @@ public class CurrentPasswordFragment extends Fragment {
 
     public void setPasswordGeneratorManager(PasswordGeneratorManager passwordGeneratorManager) {
         this.passwordGeneratorManager = passwordGeneratorManager;
+        Toast.makeText(getActivity().getApplicationContext(),passwordGeneratorManager.toString(), Toast.LENGTH_SHORT).show();
     }
 
     /**

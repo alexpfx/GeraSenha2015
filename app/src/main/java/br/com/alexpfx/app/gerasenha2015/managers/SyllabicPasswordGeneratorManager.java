@@ -9,7 +9,7 @@ import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
  * Created by alexandre on 04/02/15.
  */
 public class SyllabicPasswordGeneratorManager extends PasswordGeneratorManager {
-    protected SyllabicPasswordGeneratorManager() {
+    public SyllabicPasswordGeneratorManager() {
         super(new SyllabicPasswordGenerator());
     }
 

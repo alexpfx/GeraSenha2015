@@ -28,5 +28,9 @@ public abstract class PasswordGeneratorManager {
 
     public abstract PasswordOptions getDefaultOptions();
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 
 }
