@@ -1,6 +1,11 @@
 package br.com.alexpfx.app.gerasenha2015;
 
 
+
+
+import android.support.v4.app.DialogFragment;
+
+import br.com.alexpfx.app.gerasenha2015.fragments.BasePasswordOptionsDialogFragment;
 import br.com.alexpfx.app.gerasenha2015.managers.PasswordGeneratorManager;
 
 /**
@@ -12,7 +17,12 @@ public class SenhaMenuItem {
     private String subTitle;
     private int itemIconImgSrc;
     private PasswordGeneratorManager passwordGeneratorManager;
+    private BasePasswordOptionsDialogFragment passwordOptionsDialogFragment;
 
+
+    public BasePasswordOptionsDialogFragment getPasswordOptionsDialogFragment() {
+        return passwordOptionsDialogFragment;
+    }
 
     public String getTitle() {
         return title;
@@ -35,10 +45,7 @@ public class SenhaMenuItem {
         subTitle = builder.subTitle;
         itemIconImgSrc = builder.itemIconImgSrc;
         passwordGeneratorManager = builder.passwordGeneratorManager;
-        if (passwordGeneratorManager == null) {
-            throw new IllegalStateException("passwordGeneratorManager é obrigatório");
-        }
-
+        passwordOptionsDialogFragment = builder.passwordOptionsDialogFragment;
     }
 
 
@@ -47,6 +54,7 @@ public class SenhaMenuItem {
         private String subTitle;
         private int itemIconImgSrc;
         private PasswordGeneratorManager passwordGeneratorManager;
+        private BasePasswordOptionsDialogFragment passwordOptionsDialogFragment;
 
         public Builder() {
         }
@@ -71,8 +79,15 @@ public class SenhaMenuItem {
             return this;
         }
 
+        public Builder passwordOptionsDialogFragment(BasePasswordOptionsDialogFragment passwordOptionsDialogFragment) {
+            this.passwordOptionsDialogFragment = passwordOptionsDialogFragment;
+            return this;
+        }
+
         public SenhaMenuItem build() {
             return new SenhaMenuItem(this);
         }
     }
+
+
 }

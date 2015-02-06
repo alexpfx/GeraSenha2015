@@ -60,4 +60,9 @@ public class ConcatenatedOptionsWrapper implements IPasswordOptionsWrapper{
             return new ConcatenatedOptionsWrapper(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

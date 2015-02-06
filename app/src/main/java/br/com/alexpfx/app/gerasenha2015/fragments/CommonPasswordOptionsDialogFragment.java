@@ -1,4 +1,4 @@
-package br.com.alexpfx.app.gerasenha2015;
+package br.com.alexpfx.app.gerasenha2015.fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,14 +17,17 @@ import android.widget.TextView;
 import org.apache.commons.lang3.ArrayUtils;
 
 import br.com.alexandrealessi.gerasenha2015.R;
+import br.com.alexpfx.app.gerasenha2015.CommonPasswordOptionsViewModel;
+import br.com.alexpfx.app.gerasenha2015.SelectInverseCheckboxTouch;
+import br.com.alexpfx.app.gerasenha2015.ViewUtils;
+import br.com.alexpfx.app.gerasenha2015.model.SimplyPasswordOptionsWrapper;
 
 /**
  * Created by alexandre on 24/01/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class CommonPasswordOptionsDialogFragment extends DialogFragment {
+public class CommonPasswordOptionsDialogFragment extends BasePasswordOptionsDialogFragment {
 
-    private OnCommonPasswordOptionsPositiveButtonClick listener;
 
     @Override
     public void onAttach(Activity activity) {
@@ -64,8 +66,20 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
                         .hasLowerCase(lowerChk.isChecked())
                         .hasUpperCase(upperChk.isChecked())
                         .hasSpecialChars(specialChk.isChecked()).build();
-                if (listener != null){
-                    listener.onCommonOptionsDialogPasswordPositiveButtonClick(options);
+                Integer size = 0;
+                try {
+                    size = Integer.valueOf(passwordMaxLength.getText().toString());
+                } catch (NumberFormatException c) {
+                }
+                if (getListener() != null) {
+                    getListener().onOptionsChange(
+                            new SimplyPasswordOptionsWrapper.Builder()
+                                    .numbers(numbersChk.isChecked())
+                                    .alpha(lowerChk.isChecked())
+                                    .alphaUpperCase(upperChk.isChecked())
+                                    .specialChars(specialChk.isChecked())
+                                    .passwordLength(size)
+                                    .build());
                 }
             }
         });
@@ -73,7 +87,7 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
         builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                CommonPasswordOptionsDialogFragment.this.dismiss();
+                dismiss();
             }
         });
 
@@ -84,7 +98,5 @@ public class CommonPasswordOptionsDialogFragment extends DialogFragment {
         void onCommonOptionsDialogPasswordPositiveButtonClick(CommonPasswordOptionsViewModel options);
     }//85
 
-    public void setListener(OnCommonPasswordOptionsPositiveButtonClick listener) {
-        this.listener = listener;
-    }
+
 }

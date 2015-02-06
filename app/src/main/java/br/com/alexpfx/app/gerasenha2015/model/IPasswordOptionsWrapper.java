@@ -7,6 +7,6 @@ import br.com.alexpfx.supersenha.lib.PasswordOptions;
  */
 public interface IPasswordOptionsWrapper {
 
-    PasswordOptions getPasswordOptions ();
+    PasswordOptions getPasswordOptions();
 
 }

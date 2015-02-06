@@ -3,7 +3,6 @@ package br.com.alexpfx.app.gerasenha2015.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,21 +12,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import br.com.alexandrealessi.gerasenha2015.R;
+import br.com.alexpfx.app.gerasenha2015.OptionsChangedCallback;
 import br.com.alexpfx.app.gerasenha2015.managers.PasswordGeneratorManager;
+import br.com.alexpfx.app.gerasenha2015.model.IPasswordOptionsWrapper;
 
 /**
  * Created by alexandre on 01/02/15.
  */
-public class CurrentPasswordFragment extends Fragment {
+public class CurrentPasswordFragment extends Fragment implements OptionsChangedCallback{
 
     OnNewPasswordListener onNewPasswordListener;
-    private DialogFragment passwordOptionsDialog;
+    private BasePasswordOptionsDialogFragment passwordOptionsDialog;
     private PasswordGeneratorManager passwordGeneratorManager;
     private TextView tvCurrentPassword;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        //capturar OnNewPasswordListener
 
     }
 
@@ -41,7 +43,11 @@ public class CurrentPasswordFragment extends Fragment {
         btnPasswordSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (passwordOptionsDialog != null){
+                    if (!passwordOptionsDialog.isVisible()){
+                        passwordOptionsDialog.show(getActivity().getSupportFragmentManager(),"optionsDialog");
+                    }
+                }
             }
         });
 
@@ -66,6 +72,16 @@ public class CurrentPasswordFragment extends Fragment {
     public void setPasswordGeneratorManager(PasswordGeneratorManager passwordGeneratorManager) {
         this.passwordGeneratorManager = passwordGeneratorManager;
         Toast.makeText(getActivity().getApplicationContext(),passwordGeneratorManager.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void setPasswordOptionsDialog(BasePasswordOptionsDialogFragment passwordOptionsDialog) {
+        this.passwordOptionsDialog = passwordOptionsDialog;
+    }
+
+    @Override
+    public void onOptionsChange(IPasswordOptionsWrapper newOptions) {
+        Toast.makeText(getActivity().getApplicationContext(), newOptions.getPasswordOptions().toString(),Toast.LENGTH_SHORT).show();
+        passwordGeneratorManager.setOptions(newOptions.getPasswordOptions());
     }
 
     /**

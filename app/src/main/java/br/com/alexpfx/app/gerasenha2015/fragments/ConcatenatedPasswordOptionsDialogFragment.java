@@ -1,4 +1,4 @@
-package br.com.alexpfx.app.gerasenha2015;
+package br.com.alexpfx.app.gerasenha2015.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,18 +17,21 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import br.com.alexandrealessi.gerasenha2015.R;
+import br.com.alexpfx.app.gerasenha2015.OptionsChangedCallback;
+import br.com.alexpfx.app.gerasenha2015.SelectInverseCheckboxTouch;
+import br.com.alexpfx.app.gerasenha2015.ViewUtils;
+import br.com.alexpfx.app.gerasenha2015.fragments.BasePasswordOptionsDialogFragment;
 import br.com.alexpfx.app.gerasenha2015.model.ConcatenatedOptionsWrapper;
 
 /**
  * Created by alexandre on 25/01/15.
  */
-public class ConcatenatedPasswordOptionsDialogFragment extends DialogFragment {
+public class ConcatenatedPasswordOptionsDialogFragment extends BasePasswordOptionsDialogFragment {
 
-    private OptionsChangedCallback listener;
+
 
     @Override
     public void onAttach(Activity activity) {
-        listener = (OptionsChangedCallback) activity;
         super.onAttach(activity);
     }
 
@@ -64,14 +66,16 @@ public class ConcatenatedPasswordOptionsDialogFragment extends DialogFragment {
                 Integer maxLen = StringUtils.isBlank(maxLengthTv.getText())?null:Integer.valueOf(maxLengthTv.getText().toString());
                 Boolean includeUpper = includeUpperCheckBox.isChecked();
                 String separators = separatorsTv.getText().toString();
-                listener.onOptionsChange(new ConcatenatedOptionsWrapper.Builder().includeUpper(includeUpper).maxLength(maxLen).nrWords(nrWord).separators(separators).build());
+                if (getListener()!= null){
+                    getListener().onOptionsChange(new ConcatenatedOptionsWrapper.Builder().includeUpper(includeUpper).maxLength(maxLen).nrWords(nrWord).separators(separators).build());
+                }
             }
         });
 
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                dismiss();
             }
         });
         return builder.create();

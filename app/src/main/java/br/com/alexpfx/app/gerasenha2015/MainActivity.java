@@ -19,21 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alexandrealessi.gerasenha2015.R;
+import br.com.alexpfx.app.gerasenha2015.fragments.BasePasswordOptionsDialogFragment;
+import br.com.alexpfx.app.gerasenha2015.fragments.CommonPasswordOptionsDialogFragment;
+import br.com.alexpfx.app.gerasenha2015.fragments.ConcatenatedPasswordOptionsDialogFragment;
 import br.com.alexpfx.app.gerasenha2015.fragments.CurrentPasswordFragment;
 import br.com.alexpfx.app.gerasenha2015.managers.ConcatenatedPasswordManager;
 import br.com.alexpfx.app.gerasenha2015.managers.PasswordGeneratorManager;
 import br.com.alexpfx.app.gerasenha2015.managers.SimplyPasswordGeneratorManager;
 import br.com.alexpfx.app.gerasenha2015.managers.SyllabicPasswordGeneratorManager;
-import br.com.alexpfx.supersenha.lib.ConcatenatedPasswordGenerator;
-import br.com.alexpfx.supersenha.lib.PasswordGenerator;
-import br.com.alexpfx.supersenha.lib.SimplyPasswordGenerator;
-import br.com.alexpfx.supersenha.lib.SyllabicPasswordGenerator;
 
 import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.OnItemClick;
 import static br.com.alexpfx.app.gerasenha2015.OverflowMenuRecyclerViewAdapter.ViewModel;
 
 
-public class MainActivity extends ActionBarActivity implements OnItemClick{
+public class MainActivity extends ActionBarActivity implements OnItemClick {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -46,7 +45,6 @@ public class MainActivity extends ActionBarActivity implements OnItemClick{
     private ActionBarDrawerToggle drawerToggle;
     private TextView generatedPassTextView;
     private SenhaMenuItem activeMenuItem;
-
 
 
     @Override
@@ -93,12 +91,14 @@ public class MainActivity extends ActionBarActivity implements OnItemClick{
                 .subTitle(" Ex: a1&bC2*")
                 .itemIconImgSrc(R.drawable.ic_aleatoria)
                 .passwordGeneratorManager(new SimplyPasswordGeneratorManager())
+                .passwordOptionsDialogFragment(new CommonPasswordOptionsDialogFragment())
                 .build();
 
         SenhaMenuItem syllabicPasswordMenuItem = new SenhaMenuItem.Builder()
                 .title("Senhas Silábicas").subTitle(" Ex: Mo21Ce32&%")
                 .itemIconImgSrc(R.drawable.ic_silabica)
                 .passwordGeneratorManager(new SyllabicPasswordGeneratorManager())
+                .passwordOptionsDialogFragment(new CommonPasswordOptionsDialogFragment())
                 .build();
 
         InputStream is = getResources().openRawResource(R.raw.ptbr);
@@ -107,6 +107,7 @@ public class MainActivity extends ActionBarActivity implements OnItemClick{
                 .subTitle(" Ex: casa@tapete@ferro")
                 .itemIconImgSrc(R.drawable.ic_concatenada)
                 .passwordGeneratorManager(new ConcatenatedPasswordManager(new BufferedReader(new InputStreamReader(is))))
+                .passwordOptionsDialogFragment(new ConcatenatedPasswordOptionsDialogFragment())
                 .build();
 
         ViewModel.createNew(simplyPasswordMenuItem).addTo(lista);
@@ -158,13 +159,19 @@ public class MainActivity extends ActionBarActivity implements OnItemClick{
 
     @Override
     public void onItemClick(ViewModel viewModel) {
-        sessionTitleTextView.setText(viewModel.getSenhaMenuItem().getTitle());
         drawerLayout.closeDrawer(overflowMenuRecyclerView);
-        PasswordGeneratorManager passwordGeneratorManager = viewModel.getSenhaMenuItem().getPasswordGeneratorManager();
-        CurrentPasswordFragment f = (CurrentPasswordFragment) getSupportFragmentManager().findFragmentById(R.id.current_password_fragment);
-        if (f != null){
-            f.setPasswordGeneratorManager(passwordGeneratorManager);
 
+        SenhaMenuItem senhaMenuItem = viewModel.getSenhaMenuItem();
+        sessionTitleTextView.setText(senhaMenuItem.getTitle());
+        PasswordGeneratorManager passwordGeneratorManager = senhaMenuItem.getPasswordGeneratorManager();
+        CurrentPasswordFragment f = (CurrentPasswordFragment) getSupportFragmentManager().findFragmentById(R.id.current_password_fragment);
+
+
+        if (f != null) {
+            f.setPasswordGeneratorManager(passwordGeneratorManager);
+            BasePasswordOptionsDialogFragment passwordOptionsDialogFragment = senhaMenuItem.getPasswordOptionsDialogFragment();
+            f.setPasswordOptionsDialog(passwordOptionsDialogFragment);
+            passwordOptionsDialogFragment.setListener(f);
         }
 
     }
@@ -172,7 +179,6 @@ public class MainActivity extends ActionBarActivity implements OnItemClick{
     private void setActiveMenuItem(SenhaMenuItem senhaMenuItem) {
         this.activeMenuItem = senhaMenuItem;
     }
-
 
 
 }
