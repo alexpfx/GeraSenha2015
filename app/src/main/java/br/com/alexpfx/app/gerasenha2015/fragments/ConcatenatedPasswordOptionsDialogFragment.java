@@ -59,7 +59,7 @@ public class ConcatenatedPasswordOptionsDialogFragment extends BasePasswordOptio
 
         final TextView separatorsTv = (TextView) ViewUtils.getView(baseView, R.id.separators_textview);
 
-        builder.setPositiveButton("Gerar", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.confirmar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Integer nrWord = StringUtils.isBlank(nrWordsTv.getText())?null:Integer.valueOf(nrWordsTv.getText().toString());
