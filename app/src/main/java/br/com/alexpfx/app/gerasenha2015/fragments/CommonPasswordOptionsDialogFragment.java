@@ -56,7 +56,7 @@ public class CommonPasswordOptionsDialogFragment extends BasePasswordOptionsDial
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(baseView);
-        builder.setPositiveButton(R.string.gerar, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.confirmar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 CommonPasswordOptionsViewModel options = new CommonPasswordOptionsViewModel.Builder()

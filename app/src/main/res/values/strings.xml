@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="abrir">Abrir</string>
     <string name="fechar">Fechar</string>
-    <string name="gerar">Gerar</string>
+    <string name="confirmar">Confirmar</string>
     <string name="cancelar">Cancelar</string>
     <string name="dialog_title_password_options">Opções de Senha</string>
     <string name="numeros">Números</string>
