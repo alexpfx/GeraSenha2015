@@ -15,5 +15,7 @@
     <string name="caracteres_especiais">Caractéres Especiais</string>
     <string name="iniciais_maiusculas">Iniciais Maiúsculas</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="action_share">Compartilhar</string>
+    <string name="nova_senha_gerada_subject">[%1$s][%2$s] - Nova senha compartilhada</string>
+    <string name="nova_senha_gerada_body">Em [%1$s], [%2$s] gerou uma nova senha: [%3$s]</string>
 </resources>

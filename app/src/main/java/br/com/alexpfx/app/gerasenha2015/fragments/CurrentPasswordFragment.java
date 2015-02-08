@@ -1,6 +1,11 @@
 package br.com.alexpfx.app.gerasenha2015.fragments;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -53,6 +58,36 @@ public class CurrentPasswordFragment extends Fragment implements OptionsChangedC
 
         final ImageButton geraSenhaButton = (ImageButton) v.findViewById(R.id.btn_new_password);
 
+        final ImageButton shareButton = (ImageButton) v.findViewById(R.id.btn_share_password);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                String shareBody = "body";
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "subject");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.action_share)));
+            }
+        });
+
+        final ImageButton copyButton = (ImageButton) v.findViewById(R.id.btn_copy_password);
+        copyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence text = tvCurrentPassword.getText();
+                if (text.length() == 0){
+                    toast("Não há senha para copiar!");
+                    return;
+                }
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Senha Gerada", text);
+                clipboard.setPrimaryClip(clip);
+                toast("Senha copiada para área de transferência!");
+            }
+        });
+
+
         geraSenhaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +106,6 @@ public class CurrentPasswordFragment extends Fragment implements OptionsChangedC
 
     public void setPasswordGeneratorManager(PasswordGeneratorManager passwordGeneratorManager) {
         this.passwordGeneratorManager = passwordGeneratorManager;
-        Toast.makeText(getActivity().getApplicationContext(),passwordGeneratorManager.toString(), Toast.LENGTH_SHORT).show();
     }
 
     public void setPasswordOptionsDialog(BasePasswordOptionsDialogFragment passwordOptionsDialog) {
@@ -89,5 +123,9 @@ public class CurrentPasswordFragment extends Fragment implements OptionsChangedC
      */
     public static interface OnNewPasswordListener {
         public void receivePassword(String newPassword, String oldPassword);
+    }
+
+    public void toast (String text){
+        Toast.makeText(getActivity().getApplicationContext(),text,Toast.LENGTH_SHORT).show();
     }
 }
