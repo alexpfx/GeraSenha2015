@@ -1,21 +1,30 @@
 package br.com.alexpfx.app.gerasenha2015.model;
 
+import java.math.BigInteger;
+
 /**
  * Created by alexandre on 01/02/15.
  */
 public class Strength {
     private final Double entropy;
-    private final Integer combinations;
+    private final BigInteger averagueGuesses;
 
     private Strength(Builder builder) {
         entropy = builder.entropy;
-        combinations = builder.combinations;
+        averagueGuesses = builder.averageGuesses;
     }
 
+    public Double getEntropy() {
+        return entropy;
+    }
+
+    public BigInteger getAveragueGuesses() {
+        return averagueGuesses;
+    }
 
     public static final class Builder {
         private Double entropy;
-        private Integer combinations;
+        private BigInteger averageGuesses;
 
         public Builder() {
         }
@@ -25,8 +34,8 @@ public class Strength {
             return this;
         }
 
-        public Builder combinations(Integer combinations) {
-            this.combinations = combinations;
+        public Builder averageGuesses(BigInteger avgGuesses) {
+            this.averageGuesses = avgGuesses;
             return this;
         }
 

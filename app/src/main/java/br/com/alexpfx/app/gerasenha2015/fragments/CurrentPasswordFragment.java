@@ -5,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,19 +15,25 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import br.com.alexandrealessi.gerasenha2015.R;
 import br.com.alexpfx.app.gerasenha2015.OptionsChangedCallback;
 import br.com.alexpfx.app.gerasenha2015.managers.PasswordGeneratorManager;
 import br.com.alexpfx.app.gerasenha2015.model.IPasswordOptionsWrapper;
+import br.com.alexpfx.app.gerasenha2015.model.Password;
+import br.com.alexpfx.app.gerasenha2015.model.Strength;
 
 /**
  * Created by alexandre on 01/02/15.
  */
-public class CurrentPasswordFragment extends Fragment implements OptionsChangedCallback{
+public class CurrentPasswordFragment extends Fragment implements OptionsChangedCallback {
 
     OnNewPasswordListener onNewPasswordListener;
     private BasePasswordOptionsDialogFragment passwordOptionsDialog;
     private PasswordGeneratorManager passwordGeneratorManager;
+    private TextView tvPasswordStrength;
     private TextView tvCurrentPassword;
 
     @Override
@@ -43,14 +48,15 @@ public class CurrentPasswordFragment extends Fragment implements OptionsChangedC
         View v = inflater.inflate(R.layout.fragment_current_password, container, false);
 
         final ImageButton btnPasswordSettings = (ImageButton) v.findViewById(R.id.btn_password_settings);
-        tvCurrentPassword = (TextView) v.findViewById(R.id.current_password_textView);
+        tvCurrentPassword = (TextView) v.findViewById(R.id.tv_current_password);
+        tvPasswordStrength = (TextView) v.findViewById(R.id.tv_password_strength);
 
         btnPasswordSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (passwordOptionsDialog != null){
-                    if (!passwordOptionsDialog.isVisible()){
-                        passwordOptionsDialog.show(getActivity().getSupportFragmentManager(),"optionsDialog");
+                if (passwordOptionsDialog != null) {
+                    if (!passwordOptionsDialog.isVisible()) {
+                        passwordOptionsDialog.show(getActivity().getSupportFragmentManager(), "optionsDialog");
                     }
                 }
             }
@@ -76,7 +82,7 @@ public class CurrentPasswordFragment extends Fragment implements OptionsChangedC
             @Override
             public void onClick(View v) {
                 CharSequence text = tvCurrentPassword.getText();
-                if (text.length() == 0){
+                if (text.length() == 0) {
                     toast("Não há senha para copiar!");
                     return;
                 }
@@ -92,15 +98,21 @@ public class CurrentPasswordFragment extends Fragment implements OptionsChangedC
             @Override
             public void onClick(View v) {
                 if (passwordGeneratorManager != null) {
-                    String newPass = passwordGeneratorManager.generate();
+                    Password newPass = passwordGeneratorManager.generatePassword();
                     String oldPass = tvCurrentPassword.getText().toString();
-                    tvCurrentPassword.setText(newPass);
+                    tvCurrentPassword.setText(newPass.getPassword());
+                    DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                    decimalFormat.setRoundingMode(RoundingMode.HALF_EVEN);
+                    tvPasswordStrength.setText(decimalFormat.format(newPass.getStrength().getEntropy())+" bits, "+newPass.getStrength().getAveragueGuesses()+" tentativas");
+
                     if (onNewPasswordListener != null) {
-                        onNewPasswordListener.receivePassword(newPass, oldPass);
+                        onNewPasswordListener.receivePassword(newPass);
                     }
                 }
             }
         });
+
+
         return v;
     }
 
@@ -114,18 +126,18 @@ public class CurrentPasswordFragment extends Fragment implements OptionsChangedC
 
     @Override
     public void onOptionsChange(IPasswordOptionsWrapper newOptions) {
-        Toast.makeText(getActivity().getApplicationContext(), newOptions.getPasswordOptions().toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), newOptions.getPasswordOptions().toString(), Toast.LENGTH_SHORT).show();
         passwordGeneratorManager.setOptions(newOptions.getPasswordOptions());
+    }
+
+    public void toast(String text) {
+        Toast.makeText(getActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Listeners para outras operações com a password gerado ou com a atual.
      */
     public static interface OnNewPasswordListener {
-        public void receivePassword(String newPassword, String oldPassword);
-    }
-
-    public void toast (String text){
-        Toast.makeText(getActivity().getApplicationContext(),text,Toast.LENGTH_SHORT).show();
+        public void receivePassword(Password password);
     }
 }
