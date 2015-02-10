@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:text="SENHA GERADA"
+        android:id="@+id/item_senha"
+        android:textSize="8pt"
+        android:gravity="center|left"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+         />
+
+    <ImageButton
+        android:id="@+id/btn_favorite"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_action_not_important"
+        android:adjustViewBounds="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/item_senha"
+        />
+    <ImageButton
+        android:id="@+id/btn_share"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_action_share"
+        android:adjustViewBounds="true"
+        android:layout_below="@+id/item_senha"
+        android:layout_toLeftOf="@id/btn_favorite"
+
+        />
+
+
+    <ImageButton
+        android:id="@+id/btn_copy"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_action_copy"
+        android:adjustViewBounds="true"
+        android:layout_below="@+id/item_senha"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        />
+
+
+
+    <ImageButton
+        android:id="@+id/btn_detail"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_action_about"
+        android:adjustViewBounds="true"
+        android:layout_below="@+id/item_senha"
+        android:layout_toRightOf="@id/btn_copy"
+        />
+
+    <ImageButton
+        android:id="@+id/btn_tag"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_action_labels"
+        android:adjustViewBounds="true"
+        android:layout_below="@+id/item_senha"
+        android:layout_toRightOf="@id/btn_detail"
+
+        />
+
+
+
+
+
+
+</RelativeLayout>

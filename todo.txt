@@ -1,3 +1,5 @@
+- tirar a informação entropia e colocar em detalhes.
+- mudar layout de onde armazena senha atual, usar layout item_senha
 - externalizar strings
 ok - parametrizar senhas com options apropriado, via escolha do usuario.
 
