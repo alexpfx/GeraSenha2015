@@ -31,7 +31,6 @@
         android:adjustViewBounds="true"
         android:layout_below="@+id/item_senha"
         android:layout_toLeftOf="@id/btn_favorite"
-
         />
 
 
